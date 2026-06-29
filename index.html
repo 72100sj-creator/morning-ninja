@@ -32,6 +32,15 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .btn-primary:active{transform:scale(.97)}
 .btn-secondary{display:inline-flex;align-items:center;justify-content:center;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:100px;padding:14px 44px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s ease}
 .btn-secondary:active{background:var(--bg-warm);transform:scale(.97)}
+
+/* Ecran Pret */
+.ready-content{text-align:center;max-width:360px}
+.ready-icon{font-size:60px;margin-bottom:20px}
+.ready-title{font-size:28px;font-weight:800;margin-bottom:12px}
+.ready-text{font-size:15px;color:var(--fg-muted);margin-bottom:40px;line-height:1.5}
+.ready-ok{font-size:14px;color:var(--success);font-weight:700;margin-top:20px;opacity:0;transition:opacity .3s ease}
+.ready-ok.visible{opacity:1}
+
 .countdown-number{font-size:120px;font-weight:900;color:var(--accent);line-height:1;animation:cdPulse .8s ease-out}
 .countdown-go{font-size:32px;font-weight:900;color:var(--accent);animation:cdFade .6s ease-out}
 @keyframes cdPulse{0%{transform:scale(.4);opacity:0}50%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
@@ -123,6 +132,18 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <div class="bg-blob bg-blob-2" aria-hidden="true"></div>
 <div id="app">
 <section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilite pour bien commencer la journee.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><br><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button></div></section>
+
+<!-- NOUVEAU ECRAN : PRET ? -->
+<section class="screen" id="screen-ready" aria-label="Pret">
+<div class="ready-content">
+<div class="ready-icon" aria-hidden="true">&#128266;</div>
+<h2 class="ready-title">Pret ?</h2>
+<p class="ready-text">Cliquez sur le bouton pour activer le son.<br>Vous devez entendre un petit "Ding".</p>
+<button class="btn-primary" id="btn-activate-sound">Activer le son</button>
+<p class="ready-ok" id="ready-ok">&#10004;&#65039; Son active, c'est parti !</p>
+</div>
+</section>
+
 <section class="screen" id="screen-countdown" aria-label="Compte a rebours"><div id="countdown-display" aria-live="assertive"></div></section>
 <section class="screen" id="screen-routine" aria-label="Routine en cours"><div class="routine-header"><span class="routine-progress-text" id="routine-progress"></span><button class="routine-pause-btn" id="btn-pause" aria-label="Pause"><svg id="icon-pause" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg><svg id="icon-play" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)" style="display:none"><path d="M5 3l12 7-12 7V3z"/></svg></button></div><h2 class="routine-exercise-name" id="routine-name"></h2><p class="routine-instruction" id="routine-instruction"></p><div class="routine-illustration" id="routine-illustration" aria-hidden="true"></div><div class="routine-timer-wrap"><svg class="routine-timer-ring" viewBox="0 0 160 160"><circle class="bg" cx="80" cy="80" r="70"/><circle class="fg" id="timer-ring" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="0"/></svg><div class="routine-timer-text" id="timer-text" aria-live="polite">60</div></div><button class="routine-skip-btn" id="btn-skip">Suivant</button></section>
 <section class="screen" id="screen-end" aria-label="Routine terminee"><div class="end-emoji" aria-hidden="true">&#9728;&#65039;</div><h2 class="end-title">Routine terminee</h2><p class="end-subtitle">Bonne journee !</p><blockquote class="end-quote" id="end-quote"></blockquote><button class="btn-secondary" id="btn-home">Retour</button></section>
@@ -166,10 +187,34 @@ function playChime(){try{var ctx=getAudioCtx();if(ctx.state==="suspended")ctx.re
 function speak(text){if(!state.voiceEnabled)return;try{speechSynthesis.cancel();var utter=new SpeechSynthesisUtterance(text);utter.lang="fr-FR";utter.rate=0.9;utter.pitch=1;utter.volume=state.volume;var voices=speechSynthesis.getVoices();var frVoice=null;for(var i=0;i<voices.length;i++){if(voices[i].lang&&voices[i].lang.startsWith("fr")){frVoice=voices[i];break;}}if(frVoice)utter.voice=frVoice;speechSynthesis.speak(utter);}catch(e){}}
 if(typeof speechSynthesis!=="undefined"){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
 var appEl=document.getElementById("app");var navEl=document.getElementById("nav");
-function showScreen(name){state.currentScreen=name;var isImmersive=(name==="countdown"||name==="routine"||name==="end");appEl.classList.toggle("fullscreen",isImmersive);navEl.classList.toggle("hidden",isImmersive);var screens=document.querySelectorAll(".screen");for(var i=0;i<screens.length;i++){screens[i].classList.remove("active");}var target=document.getElementById("screen-"+name);if(target)target.classList.add("active");var navBtns=document.querySelectorAll(".nav-btn");for(var j=0;j<navBtns.length;j++){navBtns[j].classList.toggle("active",navBtns[j].dataset.screen===name);}if(name==="home")refreshHome();if(name==="history")refreshHistory();if(name==="calendar")refreshCalendar();if(name==="settings")refreshSettings();}
+function showScreen(name){state.currentScreen=name;var isImmersive=(name==="ready"||name==="countdown"||name==="routine"||name==="end");appEl.classList.toggle("fullscreen",isImmersive);navEl.classList.toggle("hidden",isImmersive);var screens=document.querySelectorAll(".screen");for(var i=0;i<screens.length;i++){screens[i].classList.remove("active");}var target=document.getElementById("screen-"+name);if(target)target.classList.add("active");var navBtns=document.querySelectorAll(".nav-btn");for(var j=0;j<navBtns.length;j++){navBtns[j].classList.toggle("active",navBtns[j].dataset.screen===name);}if(name==="home")refreshHome();if(name==="history")refreshHistory();if(name==="calendar")refreshCalendar();if(name==="settings")refreshSettings();}
 var navBtns=document.querySelectorAll(".nav-btn");for(var n=0;n<navBtns.length;n++){navBtns[n].addEventListener("click",function(){if(state.timerInterval){clearInterval(state.timerInterval);state.timerInterval=null;speechSynthesis.cancel();}showScreen(this.dataset.screen);});}
 function refreshHome(){var streak=calcStreak().current;var el=document.getElementById("home-streak");if(streak>0){el.innerHTML="&#128293; "+streak+" jour"+(streak>1?"s":"")+" de suite";el.style.display="inline-flex";}else{el.style.display="none";}}
-document.getElementById("btn-start").addEventListener("click",function(){try{getAudioCtx().resume();}catch(e){}startCountdown();});
+
+/* Bouton Accueil : mène à l'écran Prêt ? */
+document.getElementById("btn-start").addEventListener("click",function(){showScreen("ready");});
+
+/* Bouton Activer le son : force l'audio et lance le décompte */
+document.getElementById("btn-activate-sound").addEventListener("click",function(){
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = "Activation...";
+    
+    /* Force le déblocage de l'AudioContext */
+    try { getAudioCtx().resume(); } catch(e) {}
+    
+    /* Joue le chime de test */
+    playChime();
+    
+    /* Affiche le message de succès après 1 seconde, puis lance le décompte */
+    setTimeout(function(){
+        document.getElementById("ready-ok").classList.add("visible");
+        setTimeout(function(){
+            startCountdown();
+        }, 1000);
+    }, 800);
+});
+
 function startCountdown(){showScreen("countdown");var display=document.getElementById("countdown-display");var steps=["3","2","1","C'est parti"];var i=0;function nextStep(){if(i>=steps.length){startRoutine();return;}display.innerHTML="";var el=document.createElement("div");if(i<3){el.className="countdown-number";el.textContent=steps[i];playChime();}else{el.className="countdown-go";el.textContent=steps[i];}display.appendChild(el);i++;setTimeout(nextStep,i<=3?1000:800);}nextStep();}
 function startRoutine(){state.exerciseIndex=0;state.isPaused=false;updatePauseIcon();showScreen("routine");loadExercise(0);}
 function loadExercise(index){if(index>=EXERCISES.length){endRoutine();return;}state.exerciseIndex=index;state.timeRemaining=EXERCISES[index].duration;state.spokeMid=false;var ex=EXERCISES[index];document.getElementById("routine-progress").textContent=(index+1)+" / "+EXERCISES.length;document.getElementById("routine-name").textContent=ex.name;document.getElementById("routine-instruction").textContent=ex.instruction;setIllustration(index);updateTimerDisplay();speak(ex.voiceIntro);clearInterval(state.timerInterval);state.timerInterval=setInterval(tick,1000);}
