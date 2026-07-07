@@ -211,7 +211,45 @@ function setIllustration(index){
 
 var audioCtx=null;
 function getAudioCtx(){if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();}return audioCtx;}
-function playChime(){try{var ctx=getAudioCtx();if(ctx.state==="suspended")ctx.resume();var master=ctx.createGain();master.gain.value=state.volume*0.25;master.connect(ctx.destination);var osc1=ctx.createOscillator();osc1.type="sine";osc1.frequency.value=523.25;osc1.connect(master);osc1.start(ctx.currentTime);osc1.stop(ctx.currentTime+0.35);var osc2=ctx.createOscillator();osc2.type="sine";osc2.frequency.value=659.25;osc2.connect(master);osc2.start(ctx.currentTime+0.12);osc2.stop(ctx.currentTime+0.5);}catch(e){}}
+function playChime(){
+    try{
+        var ctx=getAudioCtx();
+        if(ctx.state==="suspended")ctx.resume();
+        
+        var now=ctx.currentTime;
+        var duration=2.0; // Le gong résonne pendant 2 secondes
+        
+        var master=ctx.createGain();
+        master.gain.setValueAtTime(0, now);
+        master.gain.linearRampToValueAtTime(state.volume*0.3, now+0.02); // Attaque douce
+        master.gain.exponentialRampToValueAtTime(0.001, now+duration); // Extinction progressive
+        master.connect(ctx.destination);
+        
+        // Fréquence grave (le fond du gong)
+        var osc1=ctx.createOscillator();
+        osc1.type="sine";
+        osc1.frequency.value=196; 
+        osc1.connect(master);
+        osc1.start(now);
+        osc1.stop(now+duration);
+        
+        // Harmonique (la résonance métallique)
+        var osc2=ctx.createOscillator();
+        osc2.type="sine";
+        osc2.frequency.value=293.66;
+        osc2.connect(master);
+        osc2.start(now);
+        osc2.stop(now+duration);
+        
+        // Petite quinte aiguë pour le "ding" initial
+        var osc3=ctx.createOscillator();
+        osc3.type="triangle";
+        osc3.frequency.value=392;
+        osc3.connect(master);
+        osc3.start(now);
+        osc3.stop(now+duration);
+    }catch(e){}
+}
 var bestVoiceFound = null;
 var preferredVoices = ["Amelie", "Virginie", "Aurelie", "Alice", "Thomas", "Daniel"];
 if(typeof speechSynthesis!=="undefined"){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
