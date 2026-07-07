@@ -62,6 +62,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .routine-timer-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;color:var(--fg)}
 .routine-skip-btn{background:none;border:1px solid var(--border);border-radius:100px;padding:10px 24px;font-family:inherit;font-size:14px;font-weight:600;color:var(--fg-muted);cursor:pointer;transition:all .2s ease}
 .routine-skip-btn:active{background:var(--bg-warm)}
+.wakelock-indicator{position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);opacity:0;transition:opacity .4s ease;pointer-events:none}
+.wakelock-indicator.visible{opacity:1}
+.wakelock-indicator svg{width:14px;height:14px}
 .end-emoji{font-size:64px;margin-bottom:16px;animation:endGlow 2s ease-in-out infinite alternate}
 @keyframes endGlow{0%{transform:scale(1)}100%{transform:scale(1.06)}}
 .end-title{font-size:26px;font-weight:800;margin-bottom:8px}
@@ -128,7 +131,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <section class="screen" id="screen-ready" aria-label="Pret"><div class="ready-content"><div class="ready-icon" aria-hidden="true">&#128266;</div><h2 class="ready-title">Pret ?</h2><p class="ready-text">Cliquez sur le bouton pour activer le son.<br>Vous devez entendre un petit "Ding".</p><button class="btn-primary" id="btn-activate-sound">Activer le son</button><p class="ready-ok" id="ready-ok">&#10004;&#65039; Son active !</p></div></section>
 <section class="screen" id="screen-go" aria-label="Go"><div class="go-content"><div class="go-text">GO</div></div></section>
 <section class="screen" id="screen-countdown" aria-label="Compte a rebours"><div id="countdown-display" aria-live="assertive"></div></section>
-<section class="screen" id="screen-routine" aria-label="Routine en cours"><div class="routine-header"><span class="routine-progress-text" id="routine-progress"></span><button class="routine-pause-btn" id="btn-pause" aria-label="Pause"><svg id="icon-pause" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg><svg id="icon-play" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)" style="display:none"><path d="M5 3l12 7-12 7V3z"/></svg></button></div><h2 class="routine-exercise-name" id="routine-name"></h2><p class="routine-instruction" id="routine-instruction"></p><div class="routine-illustration" id="routine-illustration" aria-hidden="true"></div><div class="routine-timer-wrap"><svg id="timer-ring-container" class="routine-timer-ring" viewBox="0 0 160 160"><circle class="bg" cx="80" cy="80" r="70"/><circle class="fg" id="timer-ring" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="0"/></svg><div class="routine-timer-text" id="timer-text" aria-live="polite">60</div></div><button class="routine-skip-btn" id="btn-skip">Suivant</button></section>
+<section class="screen" id="screen-routine" aria-label="Routine en cours" style="position:relative"><div class="wakelock-indicator" id="wakelock-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Ecran active</div><div class="routine-header"><span class="routine-progress-text" id="routine-progress"></span><button class="routine-pause-btn" id="btn-pause" aria-label="Pause"><svg id="icon-pause" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg><svg id="icon-play" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)" style="display:none"><path d="M5 3l12 7-12 7V3z"/></svg></button></div><h2 class="routine-exercise-name" id="routine-name"></h2><p class="routine-instruction" id="routine-instruction"></p><div class="routine-illustration" id="routine-illustration" aria-hidden="true"></div><div class="routine-timer-wrap"><svg id="timer-ring-container" class="routine-timer-ring" viewBox="0 0 160 160"><circle class="bg" cx="80" cy="80" r="70"/><circle class="fg" id="timer-ring" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="0"/></svg><div class="routine-timer-text" id="timer-text" aria-live="polite">60</div></div><button class="routine-skip-btn" id="btn-skip">Suivant</button></section>
 <section class="screen" id="screen-end" aria-label="Routine terminee"><div class="end-emoji" aria-hidden="true">&#9728;&#65039;</div><h2 class="end-title">Routine terminee</h2><p class="end-subtitle">Bonne journee !</p><blockquote class="end-quote" id="end-quote"></blockquote><button class="btn-secondary" id="btn-home">Retour</button></section>
 <section class="screen" id="screen-history" aria-label="Historique"><div class="page-container" id="history-content"></div></section>
 <section class="screen" id="screen-calendar" aria-label="Calendrier"><div class="page-container" id="calendar-content"></div></section>
@@ -193,7 +196,6 @@ function getFallbackSvg(index){var colors=FALLBACK_COLORS[index]||FALLBACK_COLOR
 function setIllustration(index){
     var container=document.getElementById("routine-illustration");
     container.innerHTML = getFallbackSvg(index);
-    
     var img = document.createElement("img");
     img.src = IMAGES[index];
     img.alt = EXERCISES[index].name;
@@ -215,41 +217,61 @@ function playChime(){
     try{
         var ctx=getAudioCtx();
         if(ctx.state==="suspended")ctx.resume();
-        
         var now=ctx.currentTime;
-        var duration=2.0; // Le gong résonne pendant 2 secondes
-        
+        var duration=2.0;
         var master=ctx.createGain();
         master.gain.setValueAtTime(0, now);
-        master.gain.linearRampToValueAtTime(state.volume*0.3, now+0.02); // Attaque douce
-        master.gain.exponentialRampToValueAtTime(0.001, now+duration); // Extinction progressive
+        master.gain.linearRampToValueAtTime(state.volume*0.3, now+0.02);
+        master.gain.exponentialRampToValueAtTime(0.001, now+duration);
         master.connect(ctx.destination);
-        
-        // Fréquence grave (le fond du gong)
-        var osc1=ctx.createOscillator();
-        osc1.type="sine";
-        osc1.frequency.value=196; 
-        osc1.connect(master);
-        osc1.start(now);
-        osc1.stop(now+duration);
-        
-        // Harmonique (la résonance métallique)
-        var osc2=ctx.createOscillator();
-        osc2.type="sine";
-        osc2.frequency.value=293.66;
-        osc2.connect(master);
-        osc2.start(now);
-        osc2.stop(now+duration);
-        
-        // Petite quinte aiguë pour le "ding" initial
-        var osc3=ctx.createOscillator();
-        osc3.type="triangle";
-        osc3.frequency.value=392;
-        osc3.connect(master);
-        osc3.start(now);
-        osc3.stop(now+duration);
+        var osc1=ctx.createOscillator();osc1.type="sine";osc1.frequency.value=196;osc1.connect(master);osc1.start(now);osc1.stop(now+duration);
+        var osc2=ctx.createOscillator();osc2.type="sine";osc2.frequency.value=293.66;osc2.connect(master);osc2.start(now);osc2.stop(now+duration);
+        var osc3=ctx.createOscillator();osc3.type="triangle";osc3.frequency.value=392;osc3.connect(master);osc3.start(now);osc3.stop(now+duration);
     }catch(e){}
 }
+
+/* ===== Wake Lock : empeche l'extinction de l'ecran pendant les exercices ===== */
+var wakeLock=null;
+var wakeLockSupported=('wakeLock' in navigator);
+
+function requestWakeLock(){
+    releaseWakeLock();
+    if(!wakeLockSupported) return;
+    navigator.wakeLock.request('screen').then(function(lock){
+        wakeLock=lock;
+        var indicator=document.getElementById("wakelock-indicator");
+        if(indicator) indicator.classList.add("visible");
+        wakeLock.addEventListener('release',function(){
+            wakeLock=null;
+            var ind=document.getElementById("wakelock-indicator");
+            if(ind) ind.classList.remove("visible");
+        });
+    }).catch(function(){
+        /* L'API peut echouer (HTTPS requis, batterie faible, etc.) : on ignore silencieusement */
+    });
+}
+
+function releaseWakeLock(){
+    if(wakeLock){
+        wakeLock.release().catch(function(){});
+        wakeLock=null;
+    }
+    var indicator=document.getElementById("wakelock-indicator");
+    if(indicator) indicator.classList.remove("visible");
+}
+
+/* Si l'utilisateur quitte l'app puis revient, le wake lock est automatiquement libere.
+   On le reacquiert si on est toujours dans un exercice. */
+document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState==='visible' && wakeLockSupported && !wakeLock){
+        var s=state.currentScreen;
+        if(s==='countdown'||s==='routine'){
+            requestWakeLock();
+        }
+    }
+});
+/* ===== Fin Wake Lock ===== */
+
 var bestVoiceFound = null;
 var preferredVoices = ["Amelie", "Virginie", "Aurelie", "Alice", "Thomas", "Daniel"];
 if(typeof speechSynthesis!=="undefined"){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
@@ -296,7 +318,7 @@ function speak(text){
 }
 var appEl=document.getElementById("app");var navEl=document.getElementById("nav");
 function showScreen(name){state.currentScreen=name;var isImmersive=(name==="ready"||name==="go"||name==="countdown"||name==="routine"||name==="end");appEl.classList.toggle("fullscreen",isImmersive);navEl.classList.toggle("hidden",isImmersive);var screens=document.querySelectorAll(".screen");for(var i=0;i<screens.length;i++){screens[i].classList.remove("active");}var target=document.getElementById("screen-"+name);if(target)target.classList.add("active");var navBtns=document.querySelectorAll(".nav-btn");for(var j=0;j<navBtns.length;j++){navBtns[j].classList.toggle("active",navBtns[j].dataset.screen===name);}if(name==="home")refreshHome();if(name==="history")refreshHistory();if(name==="calendar")refreshCalendar();if(name==="settings")refreshSettings();}
-var navBtns=document.querySelectorAll(".nav-btn");for(var n=0;n<navBtns.length;n++){navBtns[n].addEventListener("click",function(){if(state.timerInterval){clearInterval(state.timerInterval);state.timerInterval=null;speechSynthesis.cancel();}showScreen(this.dataset.screen);});}
+var navBtns=document.querySelectorAll(".nav-btn");for(var n=0;n<navBtns.length;n++){navBtns[n].addEventListener("click",function(){if(state.timerInterval){clearInterval(state.timerInterval);state.timerInterval=null;speechSynthesis.cancel();}releaseWakeLock();showScreen(this.dataset.screen);});}
 function refreshHome(){var streak=calcStreak().current;var el=document.getElementById("home-streak");if(streak>0){el.innerHTML="&#128293; "+streak+" jour"+(streak>1?"s":"")+" de suite";el.style.display="inline-flex";}else{el.style.display="none";}}
 document.getElementById("btn-start").addEventListener("click",function(){showScreen("ready");});
 document.getElementById("btn-activate-sound").addEventListener("click",function(){
@@ -307,7 +329,7 @@ document.getElementById("btn-activate-sound").addEventListener("click",function(
     }).catch(function() { playChime(); setTimeout(function(){ startCountdown(); }, 1000); });
 });
 function startCountdown(){
-    showScreen("countdown"); var display = document.getElementById("countdown-display"); var steps = ["3", "2", "1"]; var i = 0;
+    showScreen("countdown"); requestWakeLock(); var display = document.getElementById("countdown-display"); var steps = ["3", "2", "1"]; var i = 0;
     function nextStep(){ if(i >= steps.length){ startRoutine(); return; } display.innerHTML = ""; var el = document.createElement("div"); el.className = "countdown-number"; el.textContent = steps[i]; display.appendChild(el); playChime(); i++; setTimeout(nextStep, 1000); }
     nextStep();
 }
@@ -402,7 +424,7 @@ document.getElementById("btn-skip").addEventListener("click",function(){
     }
 });
 
-function endRoutine(){var today=todayStr();if(state.sessions.indexOf(today)===-1){state.sessions.push(today);}saveData();var quote=QUOTES[Math.floor(Math.random()*QUOTES.length)];document.getElementById("end-quote").textContent="\u00AB "+quote+" \u00BB";showScreen("end");}
+function endRoutine(){releaseWakeLock();var today=todayStr();if(state.sessions.indexOf(today)===-1){state.sessions.push(today);}saveData();var quote=QUOTES[Math.floor(Math.random()*QUOTES.length)];document.getElementById("end-quote").textContent="\u00AB "+quote+" \u00BB";showScreen("end");}
 document.getElementById("btn-home").addEventListener("click",function(){showScreen("home");});
 function refreshHistory(){var container=document.getElementById("history-content");var today=todayStr();var html='<h2 class="page-title">Historique</h2>';html+='<p class="history-section-title">Aujourd\'hui</p>';if(state.sessions.indexOf(today)!==-1){html+='<div class="history-item"><span class="history-check">&#10004;&#65039;</span><span class="history-date">Routine effectuee</span></div>';}else{html+='<div class="history-item" style="opacity:0.5"><span class="history-check">&#9675;</span><span class="history-date">Pas encore faite</span></div>';}html+='<div class="history-total">Nombre total de routines : '+state.sessions.length+'</div>';container.innerHTML=html;}
 function refreshCalendar(){var container=document.getElementById("calendar-content");var streaks=calcStreak();var html='<h2 class="page-title">Calendrier</h2>';html+='<div class="stat-cards">';html+='<div class="stat-card"><div class="stat-card-icon">&#128293;</div><div class="stat-card-value">'+streaks.current+'</div><div class="stat-card-label">Serie actuelle</div></div>';html+='<div class="stat-card"><div class="stat-card-icon">&#127942;</div><div class="stat-card-value">'+streaks.best+'</div><div class="stat-card-label">Meilleure serie</div></div>';html+='<div class="stat-card full"><div class="stat-card-icon">&#128197;</div><div class="stat-card-value">'+state.sessions.length+'</div><div class="stat-card-label">Jours realises</div></div>';html+='</div>';html+=buildMiniCalendar();container.innerHTML=html;document.getElementById("cal-prev").addEventListener("click",function(){state.calMonth--;if(state.calMonth<0){state.calMonth=11;state.calYear--;}refreshCalendar();});document.getElementById("cal-next").addEventListener("click",function(){state.calMonth++;if(state.calMonth>11){state.calMonth=0;state.calYear++;}refreshCalendar();});}
