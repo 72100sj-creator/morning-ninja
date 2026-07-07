@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#FAF5EE;--bg-warm:#F3EBE0;--fg:#3A2D1E;--fg-muted:#9B8B76;--accent:#D97B3D;--accent-hover:#C46A2E;--accent-light:#F0B87A;--accent-glow:rgba(217,123,61,0.12);--card:#FFFFFF;--border:#E8DED2;--success:#6A9B4A;--danger:#C75450;--radius:16px;--radius-sm:10px;--nav-h:72px;--safe-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#F2F4F3;--bg-warm:#E8ECEA;--fg:#1A1B1E;--fg-muted:#6E7B73;--accent:#355C3D;--accent-hover:#2A4830;--accent-light:#7BA48B;--accent-glow:rgba(53,92,61,0.12);--card:#FFFFFF;--border:#DCE2DF;--success:#6A9B4A;--danger:#C75450;--radius:16px;--radius-sm:10px;--nav-h:72px;--safe-bottom:env(safe-area-inset-bottom,0px)}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:var(--bg);background-image:radial-gradient(circle at 85% 20%,rgba(240,184,122,0.12) 0%,transparent 50%),radial-gradient(circle at 15% 80%,rgba(232,201,160,0.18) 0%,transparent 50%);color:var(--fg);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:var(--bg);background-image:radial-gradient(circle at 85% 20%,rgba(123,164,139,0.12) 0%,transparent 50%),radial-gradient(circle at 15% 80%,rgba(110,123,115,0.15) 0%,transparent 50%);color:var(--fg);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 #app{position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);overflow:hidden;transition:bottom .4s ease}
 #app.fullscreen{bottom:0}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s ease,visibility .5s ease;padding:24px;overflow-y:auto}
@@ -27,7 +27,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .home-title{font-size:34px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px;line-height:1.1}
 .home-subtitle{font-size:15px;color:var(--fg-muted);font-weight:400;margin-bottom:40px;line-height:1.5}
 .home-streak{display:inline-flex;align-items:center;gap:8px;background:var(--accent-glow);color:var(--accent);padding:8px 18px;border-radius:100px;font-size:14px;font-weight:700;margin-bottom:36px}
-.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:#fff;border:none;border-radius:100px;padding:16px 52px;font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;transition:background .3s ease,transform .15s ease,box-shadow .3s ease;box-shadow:0 4px 24px rgba(217,123,61,0.3)}
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:#fff;border:none;border-radius:100px;padding:16px 52px;font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;transition:background .3s ease,transform .15s ease,box-shadow .3s ease;box-shadow:0 4px 24px rgba(53,92,61,0.25)}
 .btn-primary:hover{background:var(--accent-hover);transform:scale(1.03)}
 .btn-primary:active{transform:scale(.97)}
 .btn-secondary{display:inline-flex;align-items:center;justify-content:center;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:100px;padding:14px 44px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s ease}
@@ -48,7 +48,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .routine-pause-btn:active{background:var(--border)}
 .routine-exercise-name{font-size:22px;font-weight:800;margin-bottom:4px;text-align:center}
 .routine-instruction{font-size:13px;color:var(--fg-muted);text-align:center;max-width:280px;line-height:1.4;margin-bottom:10px}
-.routine-illustration{width:240px;height:240px;margin-bottom:12px;flex-shrink:0;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 6px 30px rgba(0,0,0,0.08);background:var(--bg-warm)}
+.routine-illustration{width:240px;height:240px;margin-bottom:12px;flex-shrink:0;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 6px 30px rgba(26,27,30,0.08);background:var(--bg-warm)}
 .routine-illustration img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .4s ease}
 .routine-illustration img.loaded{opacity:1}
 .routine-illustration .fallback-svg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity .4s ease}
@@ -164,7 +164,7 @@ var EXERCISES=[
 ];
 var TRANSITION_DURATION = 10;
 var CIRCUMFERENCE=2*Math.PI*70;
-var FALLBACK_COLORS=[["#D97B3D","#F0B87A"],["#C46A2E","#F0B87A"],["#D97B3D","#E8C9A0"],["#B8602A","#F0B87A"],["#D97B3D","#E8C9A0"],["#C46A2E","#E8C9A0"],["#D97B3D","#F0B87A"],["#B8602A","#E8C9A0"],["#C46A2E","#F0B87A"]];
+var FALLBACK_COLORS=[["#355C3D","#7BA48B"],["#2C3E50","#9DB5B0"],["#1A1B1E","#6E7B73"],["#34495E","#A3C9A8"],["#355C3D","#A3C9A8"],["#2C3E50","#9DB5B0"],["#1A1B1E","#6E7B73"],["#34495E","#A3C9A8"],["#355C3D","#7BA48B"]];
 var QUOTES=["Une petite victoire chaque matin construit une grande victoire demain.","Le corps est ton temple. Prends-en soin chaque jour.","Chaque matin est une page blanche. Ecris quelque chose de beau.","La constance bat l'intensite. Chaque jour compte.","Commencer est la moitie du chemin.","Ton corps t'a porte jusqu'ici. Remercie-le.","Pas besoin d'etre parfait. Juste present.","Un matin de plus, un pas de plus.","La discipline est un choix quotidien, pas un talent.","Prends soin de toi d'abord. Le reste suivra.","Le mouvement est un remerciement adresse a ton corps.","Rien de grand ne se construit sans habitude."];
 var JOURS=["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
 var MOIS=["Janvier","Fevrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Decembre"];
