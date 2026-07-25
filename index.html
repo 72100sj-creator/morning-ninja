@@ -236,10 +236,10 @@ function playSuccessSound(){
         var ctx=getAudioCtx();
         if(ctx.state==="suspended")ctx.resume();
         var now=ctx.currentTime;
-        var notes=[392,523.25,659.25]; /* Sol - Do - Mi : arpege doux et positif */
+        var notes=[392,523.25,659.25,783.99,1046.5]; /* Sol - Do - Mi - Sol - Do aigu : arpege doux et positif */
         for(var i=0;i<notes.length;i++){
-            var start=now+i*0.18;
-            var noteDur=1.1;
+            var start=now+i*0.55;
+            var noteDur=4.5;
             var gain=ctx.createGain();
             gain.gain.setValueAtTime(0,start);
             gain.gain.linearRampToValueAtTime(state.volume*0.22,start+0.03);
