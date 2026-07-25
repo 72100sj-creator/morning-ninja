@@ -27,7 +27,13 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .home-logo{width:80px;height:80px;margin-bottom:20px}
 .home-title{font-size:34px;font-weight:900;letter-spacing:-.5px;margin-bottom:8px;line-height:1.1}
 .home-subtitle{font-size:15px;color:var(--fg-muted);font-weight:400;margin-bottom:40px;line-height:1.5}
-.home-streak{display:inline-flex;align-items:center;gap:8px;background:var(--accent-glow);color:var(--accent);padding:8px 18px;border-radius:100px;font-size:14px;font-weight:700;margin-bottom:36px}
+.home-streak{display:inline-flex;align-items:center;gap:8px;background:var(--accent-glow);color:var(--accent);padding:8px 18px;border-radius:100px;font-size:14px;font-weight:700;margin-bottom:20px}
+.home-week{display:flex;justify-content:center;gap:8px;margin-bottom:32px}
+.week-day{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--fg-muted)}
+.week-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--card);border:1px solid var(--border);color:#fff}
+.week-dot.done{background:var(--accent);border-color:var(--accent)}
+.week-day.today{color:var(--accent)}
+.week-day.today .week-dot{border:2px solid var(--accent)}
 .home-version{margin-top:28px;font-size:11px;font-weight:600;color:var(--fg-muted);opacity:.55;letter-spacing:.3px}
 .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg, #E89A5B 0%, #D98350 100%);color:#fff;border:none;border-radius:100px;padding:16px 52px;font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;transition:background .3s ease,transform .15s ease,box-shadow .3s ease;box-shadow:0 4px 24px rgba(217,131,80,0.35)}
 .btn-primary:hover{transform:scale(1.03);box-shadow:0 6px 28px rgba(217,131,80,0.45)}
@@ -142,7 +148,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </head>
 <body>
 <div id="app">
-<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><br><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v3.4</p></div></section>
+<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><div class="home-week" id="home-week" aria-label="Cette semaine"></div><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v3.5</p></div></section>
 <section class="screen" id="screen-ready" aria-label="Prêt"><div class="ready-content"><div class="ready-icon" aria-hidden="true">&#128266;</div><h2 class="ready-title">Prêt ?</h2><p class="ready-text">Cliquez sur le bouton pour activer le son.<br>Vous devez entendre un petit "Ding".</p><button class="btn-primary" id="btn-activate-sound">Activer le son</button><p class="ready-ok" id="ready-ok">&#10004;&#65039; Son activé !</p></div></section>
 <section class="screen" id="screen-go" aria-label="Go"><div class="go-content"><div class="go-text">GO</div></div></section>
 <section class="screen" id="screen-countdown" aria-label="Compte à rebours"><div id="countdown-display" aria-live="assertive"></div></section>
@@ -429,7 +435,20 @@ function speak(text){
 var appEl=document.getElementById("app");var navEl=document.getElementById("nav");
 function showScreen(name){state.currentScreen=name;var isImmersive=(name==="ready"||name==="go"||name==="countdown"||name==="routine"||name==="end");appEl.classList.toggle("fullscreen",isImmersive);navEl.classList.toggle("hidden",isImmersive);var screens=document.querySelectorAll(".screen");for(var i=0;i<screens.length;i++){screens[i].classList.remove("active");}var target=document.getElementById("screen-"+name);if(target)target.classList.add("active");var navBtns=document.querySelectorAll(".nav-btn");for(var j=0;j<navBtns.length;j++){navBtns[j].classList.toggle("active",navBtns[j].dataset.screen===name);}if(name==="home")refreshHome();if(name==="history")refreshHistory();if(name==="calendar")refreshCalendar();if(name==="settings")refreshSettings();}
 var navBtns=document.querySelectorAll(".nav-btn");for(var n=0;n<navBtns.length;n++){navBtns[n].addEventListener("click",function(){if(state.timerInterval){clearInterval(state.timerInterval);state.timerInterval=null;speechSynthesis.cancel();}releaseWakeLock();showScreen(this.dataset.screen);});}
-function refreshHome(){var streak=calcStreak().current;var el=document.getElementById("home-streak");if(streak>0){el.innerHTML="&#128293; "+streak+" jour"+(streak>1?"s":"")+" de suite";el.style.display="inline-flex";}else{el.style.display="none";}}
+function refreshHome(){
+    var streak=calcStreak().current;var el=document.getElementById("home-streak");
+    if(streak>0){el.innerHTML="&#128293; "+streak+" jour"+(streak>1?"s":"")+" de suite";el.style.display="inline-flex";}else{el.style.display="none";}
+    var wk=document.getElementById("home-week");
+    var now=new Date();var offset=(now.getDay()+6)%7;var today=todayStr();
+    var whtml="";
+    for(var i=0;i<7;i++){
+        var d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-offset+i);
+        var ds=dateStr(d);
+        var done=state.sessions.indexOf(ds)!==-1;
+        whtml+='<div class="week-day'+(ds===today?" today":"")+'"><span class="week-dot'+(done?" done":"")+'">'+(done?"&#10003;":"")+"</span>"+JOURS[i].charAt(0)+"</div>";
+    }
+    wk.innerHTML=whtml;
+}
 document.getElementById("btn-start").addEventListener("click",function(){showScreen("ready");});
 document.getElementById("btn-activate-sound").addEventListener("click",function(){
     var btn = this; btn.disabled = true; btn.textContent = "Activation...";
