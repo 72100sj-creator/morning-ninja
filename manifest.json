@@ -1,0 +1,20 @@
+{
+  "name": "Morning Ninja",
+  "short_name": "Morning Ninja",
+  "description": "Quelques minutes de mobilité pour bien commencer la journée.",
+  "lang": "fr",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDF1E3",
+  "theme_color": "#89C7E8",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
