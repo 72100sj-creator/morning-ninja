@@ -230,6 +230,44 @@ function playChime(){
     }catch(e){}
 }
 
+/* ===== Son de reussite : petit carillon zen ascendant joue en fin de seance ===== */
+function playSuccessSound(){
+    try{
+        var ctx=getAudioCtx();
+        if(ctx.state==="suspended")ctx.resume();
+        var now=ctx.currentTime;
+        var notes=[392,523.25,659.25]; /* Sol - Do - Mi : arpege doux et positif */
+        for(var i=0;i<notes.length;i++){
+            var start=now+i*0.18;
+            var noteDur=1.1;
+            var gain=ctx.createGain();
+            gain.gain.setValueAtTime(0,start);
+            gain.gain.linearRampToValueAtTime(state.volume*0.22,start+0.03);
+            gain.gain.exponentialRampToValueAtTime(0.001,start+noteDur);
+            gain.connect(ctx.destination);
+            var osc=ctx.createOscillator();
+            osc.type="sine";
+            osc.frequency.value=notes[i];
+            osc.connect(gain);
+            osc.start(start);
+            osc.stop(start+noteDur);
+            /* Harmonique discrete a l'octave pour un timbre de clochette */
+            var gain2=ctx.createGain();
+            gain2.gain.setValueAtTime(0,start);
+            gain2.gain.linearRampToValueAtTime(state.volume*0.06,start+0.03);
+            gain2.gain.exponentialRampToValueAtTime(0.001,start+noteDur*0.7);
+            gain2.connect(ctx.destination);
+            var osc2=ctx.createOscillator();
+            osc2.type="sine";
+            osc2.frequency.value=notes[i]*2;
+            osc2.connect(gain2);
+            osc2.start(start);
+            osc2.stop(start+noteDur*0.7);
+        }
+    }catch(e){}
+}
+/* ===== Fin son de reussite ===== */
+
 /* ===== Wake Lock : empeche l'extinction de l'ecran pendant les exercices ===== */
 var wakeLock=null;
 var wakeLockSupported=('wakeLock' in navigator);
@@ -424,7 +462,7 @@ document.getElementById("btn-skip").addEventListener("click",function(){
     }
 });
 
-function endRoutine(){releaseWakeLock();var today=todayStr();if(state.sessions.indexOf(today)===-1){state.sessions.push(today);}saveData();var quote=QUOTES[Math.floor(Math.random()*QUOTES.length)];document.getElementById("end-quote").textContent="\u00AB "+quote+" \u00BB";showScreen("end");}
+function endRoutine(){releaseWakeLock();setTimeout(playSuccessSound,400);var today=todayStr();if(state.sessions.indexOf(today)===-1){state.sessions.push(today);}saveData();var quote=QUOTES[Math.floor(Math.random()*QUOTES.length)];document.getElementById("end-quote").textContent="\u00AB "+quote+" \u00BB";showScreen("end");}
 document.getElementById("btn-home").addEventListener("click",function(){showScreen("home");});
 function refreshHistory(){var container=document.getElementById("history-content");var today=todayStr();var html='<h2 class="page-title">Historique</h2>';html+='<p class="history-section-title">Aujourd\'hui</p>';if(state.sessions.indexOf(today)!==-1){html+='<div class="history-item"><span class="history-check">&#10004;&#65039;</span><span class="history-date">Routine effectuee</span></div>';}else{html+='<div class="history-item" style="opacity:0.5"><span class="history-check">&#9675;</span><span class="history-date">Pas encore faite</span></div>';}html+='<div class="history-total">Nombre total de routines : '+state.sessions.length+'</div>';container.innerHTML=html;}
 function refreshCalendar(){var container=document.getElementById("calendar-content");var streaks=calcStreak();var html='<h2 class="page-title">Calendrier</h2>';html+='<div class="stat-cards">';html+='<div class="stat-card"><div class="stat-card-icon">&#128293;</div><div class="stat-card-value">'+streaks.current+'</div><div class="stat-card-label">Serie actuelle</div></div>';html+='<div class="stat-card"><div class="stat-card-icon">&#127942;</div><div class="stat-card-value">'+streaks.best+'</div><div class="stat-card-label">Meilleure serie</div></div>';html+='<div class="stat-card full"><div class="stat-card-icon">&#128197;</div><div class="stat-card-value">'+state.sessions.length+'</div><div class="stat-card-label">Jours realises</div></div>';html+='</div>';html+=buildMiniCalendar();container.innerHTML=html;document.getElementById("cal-prev").addEventListener("click",function(){state.calMonth--;if(state.calMonth<0){state.calMonth=11;state.calYear--;}refreshCalendar();});document.getElementById("cal-next").addEventListener("click",function(){state.calMonth++;if(state.calMonth>11){state.calMonth=0;state.calYear++;}refreshCalendar();});}
