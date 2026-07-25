@@ -63,6 +63,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .routine-timer-ring.transition-mode .fg{stroke:var(--accent-light)}
 .routine-timer-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;color:var(--fg)}
 .routine-skip-btn{background:none;border:1px solid var(--border);border-radius:100px;padding:10px 24px;font-family:inherit;font-size:14px;font-weight:600;color:var(--fg-muted);cursor:pointer;transition:all .2s ease}
+.routine-btn-row{display:flex;gap:10px}
 .routine-skip-btn:active{background:var(--bg-warm)}
 .wakelock-indicator{position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);opacity:0;transition:opacity .4s ease;pointer-events:none}
 .wakelock-indicator.visible{opacity:1}
@@ -138,11 +139,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </head>
 <body>
 <div id="app">
-<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><br><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v2.8</p></div></section>
+<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><br><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v2.9</p></div></section>
 <section class="screen" id="screen-ready" aria-label="Prêt"><div class="ready-content"><div class="ready-icon" aria-hidden="true">&#128266;</div><h2 class="ready-title">Prêt ?</h2><p class="ready-text">Cliquez sur le bouton pour activer le son.<br>Vous devez entendre un petit "Ding".</p><button class="btn-primary" id="btn-activate-sound">Activer le son</button><p class="ready-ok" id="ready-ok">&#10004;&#65039; Son activé !</p></div></section>
 <section class="screen" id="screen-go" aria-label="Go"><div class="go-content"><div class="go-text">GO</div></div></section>
 <section class="screen" id="screen-countdown" aria-label="Compte à rebours"><div id="countdown-display" aria-live="assertive"></div></section>
-<section class="screen" id="screen-routine" aria-label="Routine en cours" style="position:relative"><div class="wakelock-indicator" id="wakelock-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Écran activé</div><div class="routine-header"><span class="routine-progress-text" id="routine-progress"></span><button class="routine-pause-btn" id="btn-pause" aria-label="Pause"><svg id="icon-pause" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg><svg id="icon-play" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)" style="display:none"><path d="M5 3l12 7-12 7V3z"/></svg></button></div><h2 class="routine-exercise-name" id="routine-name"></h2><p class="routine-instruction" id="routine-instruction"></p><div class="routine-illustration" id="routine-illustration" aria-hidden="true"></div><div class="routine-timer-wrap"><svg id="timer-ring-container" class="routine-timer-ring" viewBox="0 0 160 160"><circle class="bg" cx="80" cy="80" r="70"/><circle class="fg" id="timer-ring" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="0"/></svg><div class="routine-timer-text" id="timer-text" aria-live="polite">60</div></div><button class="routine-skip-btn" id="btn-skip">Suivant</button></section>
+<section class="screen" id="screen-routine" aria-label="Routine en cours" style="position:relative"><div class="wakelock-indicator" id="wakelock-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Écran activé</div><div class="routine-header"><span class="routine-progress-text" id="routine-progress"></span><button class="routine-pause-btn" id="btn-pause" aria-label="Pause"><svg id="icon-pause" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg><svg id="icon-play" width="20" height="20" viewBox="0 0 20 20" fill="var(--fg)" style="display:none"><path d="M5 3l12 7-12 7V3z"/></svg></button></div><h2 class="routine-exercise-name" id="routine-name"></h2><p class="routine-instruction" id="routine-instruction"></p><div class="routine-illustration" id="routine-illustration" aria-hidden="true"></div><div class="routine-timer-wrap"><svg id="timer-ring-container" class="routine-timer-ring" viewBox="0 0 160 160"><circle class="bg" cx="80" cy="80" r="70"/><circle class="fg" id="timer-ring" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="0"/></svg><div class="routine-timer-text" id="timer-text" aria-live="polite">60</div></div><div class="routine-btn-row"><button class="routine-skip-btn" id="btn-prev" style="display:none">Pr&eacute;c&eacute;dent</button><button class="routine-skip-btn" id="btn-skip">Suivant</button></div></section>
 <section class="screen" id="screen-end" aria-label="Routine terminée"><div class="end-emoji" aria-hidden="true">&#9728;&#65039;</div><h2 class="end-title">Routine terminée</h2><p class="end-subtitle">Bonne journée !</p><div class="home-streak" id="end-streak" aria-live="polite" style="display:none"></div><blockquote class="end-quote" id="end-quote"></blockquote><button class="btn-secondary" id="btn-home">Retour</button></section>
 <section class="screen" id="screen-history" aria-label="Historique"><div class="page-container" id="history-content"></div></section>
 <section class="screen" id="screen-calendar" aria-label="Calendrier"><div class="page-container" id="calendar-content"></div></section>
@@ -445,6 +446,7 @@ function loadExercise(index){
     document.getElementById("routine-name").textContent=ex.name;
     document.getElementById("routine-instruction").textContent=ex.instruction;
     setIllustration(index);
+    updatePrevVisibility();
     updateTimerDisplay();
     speak(ex.voiceIntro);
     clearInterval(state.timerInterval);
@@ -463,7 +465,7 @@ function loadTransition(){
     document.getElementById("routine-instruction").textContent="Prochain exercice : " + nextEx.name;
     
     setIllustration(nextIndex);
-    
+    updatePrevVisibility();
     updateTimerDisplay();
     speak("Mise en place. Prochain exercice : " + nextEx.name + ". Préparez-vous.");
     clearInterval(state.timerInterval);
@@ -518,6 +520,22 @@ document.getElementById("btn-skip").addEventListener("click",function(){
         } else {
             endRoutine();
         }
+    }
+});
+
+/* ===== Bouton Précédent : revenir a l'exercice d'avant (ou rejouer l'exercice en cours de transition) ===== */
+function updatePrevVisibility(){
+    var b=document.getElementById("btn-prev");
+    b.style.display=(state.isTransition||state.exerciseIndex>0)?"inline-block":"none";
+}
+document.getElementById("btn-prev").addEventListener("click",function(){
+    clearInterval(state.timerInterval);
+    state.timerInterval=null;
+    playChime();
+    if(state.isTransition){
+        loadExercise(state.exerciseIndex);
+    } else if(state.exerciseIndex>0){
+        loadExercise(state.exerciseIndex-1);
     }
 });
 
