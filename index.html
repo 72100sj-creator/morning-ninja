@@ -372,6 +372,8 @@ function refreshHome(){var streak=calcStreak().current;var el=document.getElemen
 document.getElementById("btn-start").addEventListener("click",function(){showScreen("ready");});
 document.getElementById("btn-activate-sound").addEventListener("click",function(){
     var btn = this; btn.disabled = true; btn.textContent = "Activation...";
+    /* Reveil de la synthese vocale (iOS exige un declenchement pendant le toucher) : phrase vide et silencieuse */
+    try{var warm=new SpeechSynthesisUtterance(" ");warm.volume=0;speechSynthesis.speak(warm);}catch(e){}
     getAudioCtx().resume().then(function() {
         playChime(); document.getElementById("ready-ok").classList.add("visible");
         setTimeout(function(){ showScreen("go"); setTimeout(function(){ startCountdown(); }, 600); }, 1000);
