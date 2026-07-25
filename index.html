@@ -138,7 +138,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </head>
 <body>
 <div id="app">
-<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilite pour bien commencer la journee.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><br><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v1.6</p></div></section>
+<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilite pour bien commencer la journee.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><br><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v1.7</p></div></section>
 <section class="screen" id="screen-ready" aria-label="Pret"><div class="ready-content"><div class="ready-icon" aria-hidden="true">&#128266;</div><h2 class="ready-title">Pret ?</h2><p class="ready-text">Cliquez sur le bouton pour activer le son.<br>Vous devez entendre un petit "Ding".</p><button class="btn-primary" id="btn-activate-sound">Activer le son</button><p class="ready-ok" id="ready-ok">&#10004;&#65039; Son active !</p></div></section>
 <section class="screen" id="screen-go" aria-label="Go"><div class="go-content"><div class="go-text">GO</div></div></section>
 <section class="screen" id="screen-countdown" aria-label="Compte a rebours"><div id="countdown-display" aria-live="assertive"></div></section>
@@ -373,6 +373,9 @@ function speak(text){
         utter.lang="fr-FR"; utter.rate = 0.88; utter.pitch = 1.1; utter.volume = state.volume;
         var voice = findBestVoice();
         if (voice) utter.voice = voice;
+        /* iOS : la fin d'une phrase vocale est le seul moment fiable pour reveiller le moteur des sons */
+        utter.onend=function(){try{getAudioCtx().resume();}catch(e2){}};
+        utter.onerror=utter.onend;
         speechSynthesis.speak(utter);
     }catch(e){}
 }
@@ -383,12 +386,25 @@ function refreshHome(){var streak=calcStreak().current;var el=document.getElemen
 document.getElementById("btn-start").addEventListener("click",function(){showScreen("ready");});
 document.getElementById("btn-activate-sound").addEventListener("click",function(){
     var btn = this; btn.disabled = true; btn.textContent = "Activation...";
-    /* Reveil de la synthese vocale (iOS exige un declenchement pendant le toucher) : phrase vide et silencieuse */
-    try{var warm=new SpeechSynthesisUtterance(" ");warm.volume=0;warm.onend=function(){try{getAudioCtx().resume();}catch(e){}};speechSynthesis.speak(warm);}catch(e){}
-    getAudioCtx().resume().then(function() {
-        playChime(); document.getElementById("ready-ok").classList.add("visible");
-        setTimeout(function(){ showScreen("go"); setTimeout(function(){ startCountdown(); }, 600); }, 1000);
-    }).catch(function() { playChime(); setTimeout(function(){ startCountdown(); }, 1000); });
+    var launched=false;
+    function proceed(){
+        if(launched)return;launched=true;
+        getAudioCtx().resume().then(function() {
+            playChime(); document.getElementById("ready-ok").classList.add("visible");
+            setTimeout(function(){ showScreen("go"); setTimeout(function(){ startCountdown(); }, 600); }, 1000);
+        }).catch(function() { playChime(); setTimeout(function(){ startCountdown(); }, 1000); });
+    }
+    /* Reveil de la synthese vocale (iOS exige un declenchement pendant le toucher) : phrase vide et silencieuse.
+       Des que cette phrase se termine, iOS autorise le reveil du moteur des sons : on joue le Ding a ce moment precis.
+       Filet de securite : si la fin n'est pas signalee sous 600 ms, on continue quand meme. */
+    try{
+        var warm=new SpeechSynthesisUtterance(" ");
+        warm.volume=0;
+        warm.onend=proceed;
+        warm.onerror=proceed;
+        speechSynthesis.speak(warm);
+        setTimeout(proceed,600);
+    }catch(e){proceed();}
 });
 function startCountdown(){
     showScreen("countdown"); requestWakeLock(); var display = document.getElementById("countdown-display"); var steps = ["3", "2", "1"]; var i = 0;
