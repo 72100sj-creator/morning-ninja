@@ -138,7 +138,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </head>
 <body>
 <div id="app">
-<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilite pour bien commencer la journee.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><br><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v2.1</p></div></section>
+<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilite pour bien commencer la journee.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><br><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v2.2</p></div></section>
 <section class="screen" id="screen-ready" aria-label="Pret"><div class="ready-content"><div class="ready-icon" aria-hidden="true">&#128266;</div><h2 class="ready-title">Pret ?</h2><p class="ready-text">Cliquez sur le bouton pour activer le son.<br>Vous devez entendre un petit "Ding".</p><button class="btn-primary" id="btn-activate-sound">Activer le son</button><p class="ready-ok" id="ready-ok">&#10004;&#65039; Son active !</p></div></section>
 <section class="screen" id="screen-go" aria-label="Go"><div class="go-content"><div class="go-text">GO</div></div></section>
 <section class="screen" id="screen-countdown" aria-label="Compte a rebours"><div id="countdown-display" aria-live="assertive"></div></section>
@@ -155,15 +155,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 (function(){'use strict';
 
 var IMAGES = [
-    "https://z-cdn-media.chatglm.cn/files/cd530cac-3dfe-4d76-b4df-683154dc25af.jpg?auth_key=1883376585-71076ee16cd94e7f9d624d6216697324-0-3facc72c7adafd4d8b0ad307c621b2de",
-    "https://z-cdn-media.chatglm.cn/files/1f582b44-155c-4f82-a11d-bd81a982bef0.jpg?auth_key=1883376585-c08800661f1a4db0bc080182917f2d44-0-4c4644c79d3e0009cb646d53b07afbf1",
-    "https://z-cdn-media.chatglm.cn/files/ad33abd2-6a2b-453a-a676-dbbab78fb5e2.jpg?auth_key=1883376585-c355c68f262c4c9fb4d2d51e569430bf-0-ef15fb371c47934d4d1abe29d6173f8a",
-    "https://z-cdn-media.chatglm.cn/files/7cd7781e-d010-463b-924f-47da7fef1304.jpg?auth_key=1883376585-4e73ac0cb8624840837e7f5e4d74ca13-0-4aac59b202d318d116f690194c220e6f",
-    "https://z-cdn-media.chatglm.cn/files/70ef3ef8-e464-4f38-a47a-3899f0028711.jpg?auth_key=1883376585-b5d8e890457045f596de13ad6cbdb7fa-0-7e3ae29c2919aa06f35b4fb08fde6086",
-    "https://z-cdn-media.chatglm.cn/files/ccdb3d4e-8589-4243-8870-14ff730a4696.jpg?auth_key=1883376585-ec500a212c2b429f82c6eebff62db171-0-4c9db6ebea5db69b04c2a3fedd9b0640",
-    "https://z-cdn-media.chatglm.cn/files/c99f19db-1c6c-443d-9859-d3691f0c9240.jpg?auth_key=1883376585-63a69e41ad744c53b7c6ccaa27cf4b93-0-2b779dbde3d89139170427f64ffb7f97",
-    "https://z-cdn-media.chatglm.cn/files/81df2f26-2426-4d76-a361-7702f62575ba.jpg?auth_key=1883376585-3502eb7a9af44bbf93e8235e07b3e563-0-91ac70fca029073299ed96abe97c3491",
-    "https://z-cdn-media.chatglm.cn/files/665ef5c2-a8c3-4980-9b93-0e22514d1dda.jpg?auth_key=1883376585-97bbb6e38af147dca92cd5d80c88e585-0-87148ee1d9189786c62ce08f46e15a94"
+    "exercise-1.jpg",
+    "exercise-2.jpg",
+    "exercise-3.jpg",
+    "exercise-4.jpg",
+    "exercise-5.jpg",
+    "exercise-6.jpg",
+    "exercise-7.jpg",
+    "exercise-8.jpg",
+    "exercise-9.jpg"
 ];
 
 var EXERCISES=[
