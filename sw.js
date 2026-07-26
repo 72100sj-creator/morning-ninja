@@ -3,7 +3,7 @@
    (pour ne JAMAIS servir une vieille version quand on est en ligne),
    le cache ne sert que de secours hors connexion. */
 
-var CACHE_NAME = "morning-ninja-v3.3";
+var CACHE_NAME = "morning-ninja-v3.8";
 
 var PRECACHE = [
   "./",
