@@ -11,6 +11,12 @@
   "theme_color": "#89C7E8",
   "icons": [
     {
+      "src": "icon-ios-v2.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
