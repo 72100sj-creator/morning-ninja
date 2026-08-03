@@ -151,7 +151,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </head>
 <body>
 <div id="app">
-<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><div class="home-week" id="home-week" aria-label="Cette semaine"></div><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v4.1</p></div></section>
+<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><div class="home-week" id="home-week" aria-label="Cette semaine"></div><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v4.3</p></div></section>
 <section class="screen" id="screen-ready" aria-label="Prêt"><div class="ready-content"><div class="ready-icon" aria-hidden="true">&#128266;</div><h2 class="ready-title">Prêt ?</h2><p class="ready-text">Cliquez sur le bouton pour activer le son.<br>Vous devez entendre un petit "Ding".</p><button class="btn-primary" id="btn-activate-sound">Activer le son</button><p class="ready-ok" id="ready-ok">&#10004;&#65039; Son activé !</p><p class="reminder"><span aria-hidden="true">&#8986;</span>Pense &agrave; d&eacute;marrer l'activit&eacute; &laquo;&nbsp;Yoga&nbsp;&raquo; sur ta Garmin.</p></div></section>
 <section class="screen" id="screen-go" aria-label="Go"><div class="go-content"><div class="go-text">GO</div></div></section>
 <section class="screen" id="screen-countdown" aria-label="Compte à rebours"><div id="countdown-display" aria-live="assertive"></div></section>
@@ -184,7 +184,7 @@ var EXERCISES=[
 {name:"Mobilisation du bassin",duration:60,voiceIntro:"Mobilisation douce du bassin. Couché sur le dos, genoux fléchis.",instruction:"Bascule le bassin lentement : creuse très légèrement, puis colle le bas du dos au sol."},
 {name:"Chat / Vache",duration:60,voiceIntro:"Chat vache. À quatre pattes, dos neutre au départ.",instruction:"Arrondis le dos en soufflant, puis relâche très doucement sans cambrer."},
 {name:"Bird dog lent",duration:60,voiceIntro:"Bird dog. À quatre pattes, garde le dos bien neutre.",instruction:"Tends le bras droit et la jambe gauche lentement. Pas de rotation du bassin."},
-{name:"Ouverture des hanches",duration:60,voiceIntro:"Ouverture des hanches. Assis, plantes de pieds jointes.",instruction:"Laisse les genoux descendre doucement vers le sol. Ne force pas, respire."},
+{name:"Ouverture des hanches",duration:60,switchSides:true,voiceIntro:"Ouverture des hanches. Place-toi en fente, genou arrière au sol.",instruction:"Bassin qui avance légèrement, dos bien droit. Respire dans l'étirement, sans forcer."},
 {name:"Mobilité thoracique",duration:60,voiceIntro:"Mobilité thoracique. Assis, rotation douce du haut du dos.",instruction:"Tourne le buste à droite puis à gauche. Le bassin reste fixe."},
 {name:"Pont fessier",duration:60,voiceIntro:"Pont fessier. Couché sur le dos, genoux fléchis, pieds au sol.",instruction:"Soulève les hanches doucement en contractant les fessiers. Pas de cambrure."},
 {name:"Mobilité des épaules",duration:60,voiceIntro:"Mobilité des épaules. Debout, cercles lents avec les bras.",instruction:"Fais des cercles lents et amples. Alterne le sens. Détends le cou."},
@@ -206,6 +206,7 @@ var state={
     isPaused:false,
     timerInterval:null,
     spokeMid:false,
+    spokeSwitch:false,
     voiceEnabled:true,
     volume:0.8,
     exerciseDuration:60,
@@ -477,12 +478,15 @@ function loadExercise(index){
     state.isTransition=false;
     state.timeRemaining=getExDuration(index);
     state.spokeMid=false;
+    state.spokeSwitch=false;
     
     document.getElementById("timer-ring-container").classList.remove("transition-mode");
     var ex=EXERCISES[index];
     document.getElementById("routine-progress").textContent=(index+1)+" / "+EXERCISES.length;
     document.getElementById("routine-name").textContent=ex.name;
-    document.getElementById("routine-instruction").textContent=ex.instruction;
+    var instrEl=document.getElementById("routine-instruction");
+    instrEl.textContent=ex.instruction;
+    instrEl.style.display=ex.instruction?"":"none";
     setIllustration(index);
     updatePrevVisibility();
     updateTimerDisplay();
@@ -514,6 +518,14 @@ function tick(){
     if(state.isPaused)return;
     state.timeRemaining--;
     
+    if(!state.isTransition && !state.spokeSwitch && EXERCISES[state.exerciseIndex] && EXERCISES[state.exerciseIndex].switchSides){
+        var half=Math.round(getExDuration(state.exerciseIndex)/2);
+        if(half>12 && state.timeRemaining===half){
+            state.spokeSwitch=true;
+            speak("Change de côté");
+        }
+    }
+
     if(!state.isTransition && state.timeRemaining===10 && !state.spokeMid){
         state.spokeMid=true;
         speak("Dix secondes");
