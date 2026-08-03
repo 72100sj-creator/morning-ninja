@@ -2,18 +2,18 @@
 
 **Quelques minutes de mobilité pour bien commencer la journée.**
 
-Morning Ninja est une application web (PWA) de routine matinale : 9 exercices de mobilité guidés, avec minuteur, annonces vocales, suivi de progression et mode hors-ligne.
+Morning Ninja est une application web (PWA) de routine matinale : une routine d'exercices de mobilité guidés, composée à la carte dans une banque de 26 exercices, avec minuteur, annonces vocales, suivi de progression et mode hors-ligne.
 
 👉 **[Ouvrir l'application](https://72100sj-creator.github.io/morning-ninja/)**
 
-Version actuelle : **v4.5**
+Version actuelle : **v5.1**
 
 ---
 
 ## ✨ Fonctionnalités
 
 **La séance**
-- 9 exercices de mobilité enchaînés, avec photo, consigne et minuteur circulaire
+- Enchaînement d'exercices de mobilité, avec photo, consigne et minuteur circulaire
 - Annonces vocales à chaque exercice (synthèse vocale du navigateur), avec annonce « Change de côté » à mi-parcours sur les exercices concernés
 - Rappels pour la montre connectée : démarrer l'activité au lancement, l'enregistrer à la fin
 - Gong sonore aux transitions et carillon zen de réussite en fin de séance
@@ -21,6 +21,13 @@ Version actuelle : **v4.5**
 - Durée réglable : 60, 90 ou 120 secondes par exercice (la Respiration reste toujours à 60 s)
 - L'écran reste allumé pendant la séance
 - Mise en pause automatique si l'application passe en arrière-plan (appel, changement d'app)
+
+**Ma routine** *(onglet dédié)*
+- Banque de **26 exercices** : allongé sur le dos, à quatre pattes, assis, debout
+- Activer, désactiver et réordonner librement les exercices ; durée estimée affichée en direct
+- Enregistrer plusieurs routines nommées (« Réveil court », « Dimanche long »…) et les charger d'un appui
+- Une routine porte une ★ : c'est la routine de référence, elle ne peut pas être supprimée
+- La routine par défaut reprend les 9 exercices d'origine ; les autres restent disponibles, désactivés
 
 **Le suivi**
 - Série en cours (streak) sur l'accueil et sur l'écran de fin
@@ -57,7 +64,8 @@ Toutes les données restent **sur l'appareil** (stockage local du navigateur). A
 Sont enregistrés :
 - les dates des séances effectuées ;
 - l'activation des annonces vocales et le volume ;
-- la durée d'exercice choisie.
+- la durée d'exercice choisie ;
+- la composition de la routine et les routines enregistrées.
 
 **Sauvegarde** : Paramètres → *Exporter mes données* télécharge un fichier `.json`. *Importer une sauvegarde* le réinjecte en **fusionnant** avec l'historique existant, sans jamais rien écraser ni supprimer.
 
@@ -74,7 +82,7 @@ Sont enregistrés :
 | `icon-512.png` | Icône PWA standard (512×512) |
 | `sound-ding.mp3` | Gong des transitions |
 | `sound-success.mp3` | Carillon de fin de séance |
-| `exercise-1.jpg` … `exercise-9.jpg` | Photos des 9 exercices |
+| `exercise-1.jpg` … `exercise-26.jpg` | Photos des 26 exercices de la banque |
 
 Aucune dépendance, aucun outil de build : le projet est déployé tel quel via **GitHub Pages**.
 
@@ -87,10 +95,11 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 3. Fermer complètement l'application sur le téléphone, puis la rouvrir.
 4. Vérifier le numéro de version affiché sur l'écran d'accueil.
 
-**Trois règles à respecter :**
+**Quatre règles à respecter :**
 
 - Le numéro de version en bas de l'accueil (`index.html`, classe `home-version`) doit être incrémenté à chaque livraison : c'est le témoin fiable qu'une mise à jour est bien arrivée.
 - Si un **son, une image ou une icône** est modifié, il faut aussi changer la valeur de `CACHE_NAME` dans `sw.js` (ex. `morning-ninja-v3.8` → `morning-ninja-v3.9`). Sans cela, les appareils continueraient d'afficher les anciens fichiers gardés en réserve hors-ligne. Le fichier `index.html` est, lui, toujours rechargé depuis le réseau : il n'est jamais servi en version périmée.
+- Pour ajouter un exercice : déposer sa photo (`exercise-N.jpg`, carrée, 800×800) puis ajouter son entrée dans le tableau `CATALOG` d'`index.html` — identifiant unique, nom affiché, nom prononcé, texte vocal, consigne, et `switchSides:true` si l'exercice se fait des deux côtés. Un exercice ajouté apparaît désactivé dans les routines existantes : aucune routine n'est modifiée à l'insu de l'utilisateur.
 - Si l'**icône** change, il faut lui donner un **nouveau nom de fichier** (ex. `icon-ios-v2.png` → `icon-ios-v3.png`) et mettre à jour `index.html`, `manifest.json` et `sw.js`. iOS mémorise l'icône par son nom : à nom identique, l'ancienne image resterait affichée indéfiniment.
 
 ---
@@ -108,6 +117,12 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 
 | Version | Évolution |
 |---|---|
+| v5.1 | La routine de référence ne peut plus être supprimée |
+| v5.0 | Les 26 exercices de la banque disponibles ; onglet « Ma routine » dédié |
+| v4.9 | Correction du défilement des pages longues et de l'enregistrement des routines |
+| v4.8 | Routines nommées : enregistrer, charger, définir une référence |
+| v4.7 | Composer sa routine : activer, désactiver et réordonner les exercices |
+| v4.6 | Photos corrigées pour les exercices 2, 8 et 9 |
 | v4.5 | Noms prononcés distincts des noms affichés ; correction du dernier mot tronqué sur iOS |
 | v4.4 | Prononciation améliorée : ponctuation, débit plus posé, tutoiement cohérent |
 | v4.3 | Exercice 5 corrigé (fente basse) et annonce « Change de côté » à mi-parcours |
@@ -140,8 +155,6 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 
 ## 💡 Pistes d'évolution
 
-- Composer sa routine : activer, désactiver et réordonner les exercices
-- Banque d'exercices élargie, puis plusieurs routines enregistrées et nommées
 - Choix de la voix parmi celles installées sur l'appareil
 
 **Écartés volontairement :**

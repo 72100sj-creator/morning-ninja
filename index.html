@@ -17,9 +17,12 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 #app.fullscreen{bottom:0}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s ease,visibility .5s ease;padding:24px;overflow-y:auto}
 .screen.active{opacity:1;visibility:visible;pointer-events:auto}
+/* Pages longues : demarrage en haut, sinon le centrage vertical rend le haut inaccessible au defilement */
+#screen-history,#screen-calendar,#screen-settings,#screen-routine-edit{justify-content:flex-start;padding-bottom:40px}
 #nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--card);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding-bottom:var(--safe-bottom);transition:transform .4s ease,opacity .4s ease;z-index:100}
 #nav.hidden{transform:translateY(100%);opacity:0;pointer-events:none}
-.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--fg-muted);font-family:inherit;font-size:11px;font-weight:600;padding:8px 16px;border-radius:var(--radius-sm);transition:color .3s ease}
+.nav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--fg-muted);font-family:inherit;font-size:10px;font-weight:600;padding:8px 6px;border-radius:var(--radius-sm);transition:color .3s ease;flex:1;min-width:0}
+.nav-btn svg{flex-shrink:0}
 .nav-btn svg{width:22px;height:22px;transition:transform .3s ease}
 .nav-btn.active{color:var(--accent)}
 .nav-btn.active svg{transform:scale(1.1)}
@@ -73,6 +76,21 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .reminder{display:flex;align-items:center;gap:10px;justify-content:center;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 16px;margin:18px auto 0;max-width:300px;font-size:13px;font-weight:600;color:var(--fg-muted);line-height:1.4;text-align:left}
 .reminder span{font-size:18px;flex-shrink:0}
 .dur-wrap{display:flex;gap:6px}
+.rt-list{display:flex;flex-direction:column;gap:6px;width:100%}
+.rt-row{display:flex;align-items:center;gap:10px;background:var(--bg-warm);border:1px solid var(--border);border-radius:10px;padding:8px 10px}
+.rt-row.off{opacity:.45}
+.rt-name{flex:1;font-size:14px;font-weight:600;color:var(--fg);text-align:left}
+.rt-btn{background:none;border:1px solid var(--border);border-radius:8px;width:30px;height:30px;font-family:inherit;font-size:14px;font-weight:700;color:var(--fg-muted);cursor:pointer;flex-shrink:0}
+.rt-btn:disabled{opacity:.25;cursor:default}
+.rt-check{width:20px;height:20px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
+.rt-hint{font-size:12px;color:var(--fg-muted);margin:8px 0 0;text-align:center}
+.rs-wrap{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.rs-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg-warm);border:1px solid var(--border);border-radius:100px;padding:6px 8px 6px 12px;font-size:13px;font-weight:700;color:var(--fg)}
+.rs-chip.is-def{border-color:var(--accent);color:var(--accent)}
+.rs-load{background:none;border:none;font-family:inherit;font-size:13px;font-weight:700;color:inherit;cursor:pointer;padding:0}
+.rs-mini{background:none;border:none;font-size:13px;line-height:1;color:var(--fg-muted);cursor:pointer;padding:2px 3px}
+.rs-mini.on{color:var(--accent)}
+.rs-input{flex:1;min-width:0;font-family:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--fg)}
 .dur-btn{background:none;border:1px solid var(--border);border-radius:100px;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:700;color:var(--fg-muted);cursor:pointer;transition:all .2s ease}
 .dur-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
 .routine-skip-btn:active{background:var(--bg-warm)}
@@ -128,6 +146,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s ease,visibility .3s ease;padding:24px}
 .modal-overlay.active{opacity:1;visibility:visible;pointer-events:auto}
 .modal-box{background:var(--card);border-radius:var(--radius);padding:28px 24px;max-width:320px;width:100%;text-align:center;transform:scale(.9);transition:transform .3s ease}
+.modal-overlay.with-input{align-items:flex-start;padding-top:12vh}
 .modal-overlay.active .modal-box{transform:scale(1)}
 .modal-title{font-size:18px;font-weight:800;margin-bottom:8px}
 .modal-text{font-size:14px;color:var(--fg-muted);margin-bottom:24px;line-height:1.5}
@@ -151,7 +170,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </head>
 <body>
 <div id="app">
-<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><div class="home-week" id="home-week" aria-label="Cette semaine"></div><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v4.6</p></div></section>
+<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><div class="home-week" id="home-week" aria-label="Cette semaine"></div><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v5.1</p></div></section>
 <section class="screen" id="screen-ready" aria-label="Prêt"><div class="ready-content"><div class="ready-icon" aria-hidden="true">&#128266;</div><h2 class="ready-title">Prêt ?</h2><p class="ready-text">Cliquez sur le bouton pour activer le son.<br>Vous devez entendre un petit "Ding".</p><button class="btn-primary" id="btn-activate-sound">Activer le son</button><p class="ready-ok" id="ready-ok">&#10004;&#65039; Son activé !</p><p class="reminder"><span aria-hidden="true">&#8986;</span>Pense &agrave; d&eacute;marrer l'activit&eacute; &laquo;&nbsp;Yoga&nbsp;&raquo; sur ta Garmin.</p></div></section>
 <section class="screen" id="screen-go" aria-label="Go"><div class="go-content"><div class="go-text">GO</div></div></section>
 <section class="screen" id="screen-countdown" aria-label="Compte à rebours"><div id="countdown-display" aria-live="assertive"></div></section>
@@ -159,40 +178,100 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <section class="screen" id="screen-end" aria-label="Routine terminée"><div class="end-emoji" aria-hidden="true">&#9728;&#65039;</div><h2 class="end-title">Routine terminée</h2><p class="end-subtitle">Bonne journée !</p><div class="home-streak" id="end-streak" aria-live="polite" style="display:none"></div><blockquote class="end-quote" id="end-quote"></blockquote><p class="reminder" style="margin-bottom:22px"><span aria-hidden="true">&#9989;</span>N'oublie pas d'enregistrer ton activit&eacute; Garmin.</p><button class="btn-secondary" id="btn-home">Retour</button></section>
 <section class="screen" id="screen-history" aria-label="Historique"><div class="page-container" id="history-content"></div></section>
 <section class="screen" id="screen-calendar" aria-label="Calendrier"><div class="page-container" id="calendar-content"></div></section>
-<section class="screen" id="screen-settings" aria-label="Paramètres"><div class="page-container"><h2 class="page-title">Paramètres</h2><div class="settings-group"><div class="settings-item"><span class="settings-label">Annonces vocales</span><label class="toggle"><input type="checkbox" id="setting-voice" checked><span class="toggle-slider"></span></label></div><div class="settings-item"><span class="settings-label">Volume</span><div class="volume-wrap"><svg class="volume-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg><input type="range" id="setting-volume" min="0" max="1" step="0.05" value="0.8"></div></div><div class="settings-item"><span class="settings-label">Dur&eacute;e des exercices</span><div class="dur-wrap"><button class="dur-btn" data-dur="60">60 s</button><button class="dur-btn" data-dur="90">90 s</button><button class="dur-btn" data-dur="120">120 s</button></div></div></div><div class="settings-group"><div class="settings-item" style="flex-direction:column;align-items:stretch;gap:12px"><span class="settings-label">Sauvegarde</span><button class="btn-secondary" id="btn-export" style="width:100%">Exporter mes donn&eacute;es</button><button class="btn-secondary" id="btn-import" style="width:100%">Importer une sauvegarde</button><input type="file" id="import-file" accept=".json,application/json" style="display:none"><p id="backup-status" style="font-size:13px;color:var(--fg-muted);text-align:center;margin:0;display:none" aria-live="polite"></p></div></div><div class="settings-group"><div class="settings-item" style="flex-direction:column;align-items:stretch;gap:12px"><span class="settings-label">Réinitialiser les données</span><button class="btn-danger" id="btn-reset">Tout effacer</button></div></div></div></section>
+<section class="screen" id="screen-routine-edit" aria-label="Ma routine"><div class="page-content"><h2 class="page-title">Ma routine</h2><div class="settings-group"><div class="settings-item" style="flex-direction:column;align-items:stretch;gap:10px"><div class="rt-list" id="routine-list"></div><p class="rt-hint" id="routine-hint"></p></div></div><div class="settings-group"><div class="settings-item" style="flex-direction:column;align-items:stretch;gap:10px"><span class="settings-label">Routines enregistr&eacute;es</span><div class="rs-wrap" id="routines-saved"></div><p class="rt-hint" style="margin:0 0 4px">&#9733; routine de r&eacute;f&eacute;rence &middot; appuie sur un nom pour la charger</p><button class="btn-secondary" id="btn-save-routine" style="width:100%">Enregistrer cette routine</button></div></div></div></section><section class="screen" id="screen-settings" aria-label="Paramètres"><div class="page-container"><h2 class="page-title">Paramètres</h2><div class="settings-group"><div class="settings-item"><span class="settings-label">Annonces vocales</span><label class="toggle"><input type="checkbox" id="setting-voice" checked><span class="toggle-slider"></span></label></div><div class="settings-item"><span class="settings-label">Volume</span><div class="volume-wrap"><svg class="volume-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg><input type="range" id="setting-volume" min="0" max="1" step="0.05" value="0.8"></div></div><div class="settings-item"><span class="settings-label">Dur&eacute;e des exercices</span><div class="dur-wrap"><button class="dur-btn" data-dur="60">60 s</button><button class="dur-btn" data-dur="90">90 s</button><button class="dur-btn" data-dur="120">120 s</button></div></div></div><div class="settings-group"><div class="settings-item" style="flex-direction:column;align-items:stretch;gap:12px"><span class="settings-label">Sauvegarde</span><button class="btn-secondary" id="btn-export" style="width:100%">Exporter mes donn&eacute;es</button><button class="btn-secondary" id="btn-import" style="width:100%">Importer une sauvegarde</button><input type="file" id="import-file" accept=".json,application/json" style="display:none"><p id="backup-status" style="font-size:13px;color:var(--fg-muted);text-align:center;margin:0;display:none" aria-live="polite"></p></div></div><div class="settings-group"><div class="settings-item" style="flex-direction:column;align-items:stretch;gap:12px"><span class="settings-label">Réinitialiser les données</span><button class="btn-danger" id="btn-reset">Tout effacer</button></div></div></div></section>
 </div>
-<nav id="nav" aria-label="Navigation principale"><button class="nav-btn active" data-screen="home" aria-label="Accueil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10"/></svg>Accueil</button><button class="nav-btn" data-screen="history" aria-label="Historique"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Historique</button><button class="nav-btn" data-screen="calendar" aria-label="Calendrier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Calendrier</button><button class="nav-btn" data-screen="settings" aria-label="Paramètres"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Paramètres</button></nav>
+<nav id="nav" aria-label="Navigation principale"><button class="nav-btn active" data-screen="home" aria-label="Accueil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10"/></svg>Accueil</button><button class="nav-btn" data-screen="history" aria-label="Historique"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Historique</button><button class="nav-btn" data-screen="calendar" aria-label="Calendrier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Calendrier</button><button class="nav-btn" data-screen="routine-edit" aria-label="Ma routine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Ma routine</button><button class="nav-btn" data-screen="settings" aria-label="Paramètres"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Paramètres</button></nav>
 <div id="rotate-overlay" aria-hidden="true"><div class="rotate-phone"></div><h2 class="rotate-title">Mode portrait uniquement</h2><p class="rotate-text">Tourne ton t&eacute;l&eacute;phone pour continuer &#129399;</p></div>
-<div class="modal-overlay" id="modal" role="dialog" aria-modal="true"><div class="modal-box"><h3 class="modal-title" id="modal-title"></h3><p class="modal-text" id="modal-text"></p><div class="modal-actions"><button class="modal-cancel" id="modal-cancel">Annuler</button><button class="modal-confirm" id="modal-confirm">Confirmer</button></div></div></div>
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true"><div class="modal-box"><h3 class="modal-title" id="modal-title"></h3><p class="modal-text" id="modal-text"></p><input type="text" class="rs-input" id="modal-input" maxlength="28" autocomplete="off" style="display:none;margin-bottom:18px"><div class="modal-actions"><button class="modal-cancel" id="modal-cancel">Annuler</button><button class="modal-confirm" id="modal-confirm">Confirmer</button></div></div></div>
 <script>
 (function(){'use strict';
 
-var IMAGES = [
-    "exercise-1.jpg",
-    "exercise-2.jpg",
-    "exercise-3.jpg",
-    "exercise-4.jpg",
-    "exercise-5.jpg",
-    "exercise-6.jpg",
-    "exercise-7.jpg",
-    "exercise-8.jpg",
-    "exercise-9.jpg"
+var CATALOG=[
+{id:"respiration",img:"exercise-1.jpg",name:"Respiration",voiceName:"Respiration",duration:60,voiceIntro:"Respiration profonde. Inspire par le nez, expire par la bouche.",instruction:"Inspire 4 secondes, expire 6 secondes. Détends les épaules et le visage."},
+{id:"bassin",img:"exercise-2.jpg",name:"Mobilisation du bassin",voiceName:"Mobilisation du bassin",duration:60,voiceIntro:"Mobilisation douce du bassin. Couché sur le dos, genoux fléchis, pieds au sol.",instruction:"Bascule le bassin lentement : creuse très légèrement, puis colle le bas du dos au sol."},
+{id:"chat-vache",img:"exercise-3.jpg",name:"Chat / Vache",voiceName:"Le chat, puis la vache",duration:60,voiceIntro:"Le chat, puis la vache. À quatre pattes, dos neutre au départ.",instruction:"Arrondis le dos en soufflant, puis relâche très doucement sans cambrer."},
+{id:"bird-dog",img:"exercise-4.jpg",name:"Bird dog lent",voiceName:"Beurd dog",duration:60,voiceIntro:"Beurd dog. À quatre pattes, garde le dos bien neutre.",instruction:"Tends le bras droit et la jambe gauche lentement. Pas de rotation du bassin."},
+{id:"hanches",img:"exercise-5.jpg",name:"Ouverture des hanches",voiceName:"Ouverture des hanches",duration:60,switchSides:true,voiceIntro:"Ouverture des hanches. Une jambe devant, genou arrière posé au sol.",instruction:"Bassin qui avance légèrement, dos bien droit. Respire dans l'étirement, sans forcer."},
+{id:"thoracique",img:"exercise-6.jpg",name:"Mobilité thoracique",voiceName:"Mobilité thoracique",duration:60,voiceIntro:"Mobilité thoracique. Assis, rotation douce du haut du dos.",instruction:"Tourne le buste à droite puis à gauche. Le bassin reste fixe."},
+{id:"pont-fessier",img:"exercise-7.jpg",name:"Pont fessier",voiceName:"Pont fessier",duration:60,voiceIntro:"Pont fessier. Couché sur le dos, genoux fléchis, pieds au sol.",instruction:"Soulève les hanches doucement en contractant les fessiers. Pas de cambrure."},
+{id:"epaules",img:"exercise-8.jpg",name:"Mobilité des épaules",voiceName:"Mobilité des épaules",duration:60,voiceIntro:"Mobilité des épaules. Debout, cercles lents avec les bras.",instruction:"Fais des cercles lents et amples. Alterne le sens. Détends le cou."},
+{id:"etirements",img:"exercise-9.jpg",name:"Étirements doux",voiceName:"Étirements doux",duration:60,voiceIntro:"Étirements doux. Debout, penche-toi lentement, vers l'avant.",instruction:"Laisse la tête et les bras pendre. Ne force pas. Respire dans l'étirement."},
+{id:"squat-chaise",img:"exercise-10.jpg",name:"Squat sur chaise",voiceName:"Squat sur chaise",duration:60,voiceIntro:"Squat sur chaise. Debout devant une chaise, pieds à la largeur des hanches.",instruction:"Descends lentement jusqu'à effleurer l'assise, puis remonte. Dos droit, poids sur les talons."},
+{id:"fente-bras",img:"exercise-11.jpg",name:"Fente bras levés",voiceName:"Fente bras levés",switchSides:true,duration:60,voiceIntro:"Fente bras levés. Une jambe devant, bras tendus vers le haut.",instruction:"Grandis-toi en levant les bras, bassin bien engagé. Respire, sans cambrer le bas du dos."},
+{id:"papillon-mur",img:"exercise-12.jpg",name:"Papillon au mur",voiceName:"Papillon au mur",duration:60,voiceIntro:"Papillon au mur. Assis face au mur, plantes de pieds jointes.",instruction:"Laisse les genoux s'ouvrir vers le sol et monte les mains le long du mur. Ne force jamais."},
+{id:"genoux-poitrine",img:"exercise-13.jpg",name:"Genoux à la poitrine",voiceName:"Genoux à la poitrine",duration:60,voiceIntro:"Genoux à la poitrine. Couché sur le dos.",instruction:"Ramène les deux genoux contre toi et entoure-les de tes bras. Relâche le bas du dos, respire."},
+{id:"torsion-allongee",img:"exercise-14.jpg",name:"Torsion allongée",voiceName:"Torsion allongée",switchSides:true,duration:60,voiceIntro:"Torsion allongée. Couché sur le dos, bras en croix.",instruction:"Laisse les genoux basculer d'un côté, épaules bien au sol. Regarde du côté opposé."},
+{id:"jambe-tendue",img:"exercise-15.jpg",name:"Jambe tendue",voiceName:"Jambe tendue",switchSides:true,duration:60,voiceIntro:"Jambe tendue. Couché sur le dos, une jambe vers le ciel.",instruction:"Monte la jambe tendue, l'autre reste au sol. Tu sens l'arrière de la cuisse travailler."},
+{id:"dead-bug",img:"exercise-16.jpg",name:"Dead bug",voiceName:"Dead bug",duration:60,voiceIntro:"Dead bug. Couché sur le dos, bras et jambes en l'air.",instruction:"Tends lentement un bras et la jambe opposée, puis change. Le bas du dos reste collé au sol."},
+{id:"flexion-assise",img:"exercise-17.jpg",name:"Flexion avant assise",voiceName:"Flexion avant assise",duration:60,voiceIntro:"Flexion avant assise. Assis, jambes tendues devant toi.",instruction:"Penche le buste vers les pieds, dos long. Va seulement où c'est confortable."},
+{id:"torsion-assise",img:"exercise-18.jpg",name:"Torsion assise",voiceName:"Torsion assise",switchSides:true,duration:60,voiceIntro:"Torsion assise. Assis, une jambe croisée par-dessus l'autre.",instruction:"Tourne le buste vers le genou levé, en grandissant la colonne. Respire dans la rotation."},
+{id:"chien-tete-bas",img:"exercise-19.jpg",name:"Chien tête en bas",voiceName:"Chien tête en bas",duration:60,voiceIntro:"Chien tête en bas. Mains et pieds au sol, bassin vers le haut.",instruction:"Pousse le sol avec les mains, talons vers le sol sans forcer. Genoux légèrement fléchis si besoin."},
+{id:"cobra",img:"exercise-20.jpg",name:"Cobra",voiceName:"Cobra",duration:60,voiceIntro:"Cobra. À plat ventre, mains sous les épaules.",instruction:"Redresse le buste en douceur, épaules basses. Reste dans une zone confortable."},
+{id:"papillon-assis",img:"exercise-21.jpg",name:"Papillon assis",voiceName:"Papillon assis",duration:60,voiceIntro:"Papillon assis. Assis, plantes de pieds jointes devant toi.",instruction:"Laisse les genoux descendre vers le sol, dos droit. Ne force pas, respire calmement."},
+{id:"enfilage-aiguille",img:"exercise-22.jpg",name:"Enfilage d'aiguille",voiceName:"Enfilage d'aiguille",switchSides:true,duration:60,voiceIntro:"Enfilage d'aiguille. À quatre pattes.",instruction:"Glisse un bras sous le corps, épaule et tempe posées au sol. Respire dans le haut du dos."},
+{id:"posture-enfant",img:"exercise-23.jpg",name:"Posture de l'enfant",voiceName:"Posture de l'enfant",duration:60,voiceIntro:"Posture de l'enfant. À genoux, front vers le sol.",instruction:"Assieds-toi sur les talons, bras tendus devant. Laisse le dos s'arrondir et respire lentement."},
+{id:"etirement-lateral",img:"exercise-24.jpg",name:"Étirement latéral",voiceName:"Étirement latéral",switchSides:true,duration:60,voiceIntro:"Étirement latéral. Debout, un bras au-dessus de la tête.",instruction:"Incline le buste sur le côté en gardant le bassin stable. Tu sens les côtes s'ouvrir."},
+{id:"cercles-hanches",img:"exercise-25.jpg",name:"Cercles de hanches",voiceName:"Cercles de hanches",duration:60,voiceIntro:"Cercles de hanches. Debout, mains sur les hanches.",instruction:"Dessine des cercles lents avec le bassin. Alterne le sens à mi-parcours."},
+{id:"deroule-pieds",img:"exercise-26.jpg",name:"Déroulé des pieds",voiceName:"Déroulé des pieds",duration:60,voiceIntro:"Déroulé des pieds. Debout, pieds parallèles.",instruction:"Monte lentement sur la pointe des pieds, puis redescends en déroulant. Réveille chevilles et mollets."}
 ];
 
-var EXERCISES=[
-{name:"Respiration",voiceName:"Respiration",duration:60,voiceIntro:"Respiration profonde. Inspire par le nez, expire par la bouche.",instruction:"Inspire 4 secondes, expire 6 secondes. Détends les épaules et le visage."},
-{name:"Mobilisation du bassin",voiceName:"Mobilisation du bassin",duration:60,voiceIntro:"Mobilisation douce du bassin. Couché sur le dos, genoux fléchis, pieds au sol.",instruction:"Bascule le bassin lentement : creuse très légèrement, puis colle le bas du dos au sol."},
-{name:"Chat / Vache",voiceName:"Le chat, puis la vache",duration:60,voiceIntro:"Le chat, puis la vache. À quatre pattes, dos neutre au départ.",instruction:"Arrondis le dos en soufflant, puis relâche très doucement sans cambrer."},
-{name:"Bird dog lent",voiceName:"Beurd dog",duration:60,voiceIntro:"Beurd dog. À quatre pattes, garde le dos bien neutre.",instruction:"Tends le bras droit et la jambe gauche lentement. Pas de rotation du bassin."},
-{name:"Ouverture des hanches",voiceName:"Ouverture des hanches",duration:60,switchSides:true,voiceIntro:"Ouverture des hanches. Une jambe devant, genou arrière posé au sol.",instruction:"Bassin qui avance légèrement, dos bien droit. Respire dans l'étirement, sans forcer."},
-{name:"Mobilité thoracique",voiceName:"Mobilité thoracique",duration:60,voiceIntro:"Mobilité thoracique. Assis, rotation douce du haut du dos.",instruction:"Tourne le buste à droite puis à gauche. Le bassin reste fixe."},
-{name:"Pont fessier",voiceName:"Pont fessier",duration:60,voiceIntro:"Pont fessier. Couché sur le dos, genoux fléchis, pieds au sol.",instruction:"Soulève les hanches doucement en contractant les fessiers. Pas de cambrure."},
-{name:"Mobilité des épaules",voiceName:"Mobilité des épaules",duration:60,voiceIntro:"Mobilité des épaules. Debout, cercles lents avec les bras.",instruction:"Fais des cercles lents et amples. Alterne le sens. Détends le cou."},
-{name:"Étirements doux",voiceName:"Étirements doux",duration:60,voiceIntro:"Étirements doux. Debout, penche-toi lentement, vers l'avant.",instruction:"Laisse la tête et les bras pendre. Ne force pas. Respire dans l'étirement."}
-];
+/* Routine active : sous-ensemble ordonne du catalogue, defini dans les Parametres */
+var EXERCISES = CATALOG.slice();
+function defaultRoutineExercises(){var l=[];for(var i=0;i<ROUTINE_BASE.length;i++){var e=catalogById(ROUTINE_BASE[i]);if(e)l.push(e);}return l.length?l:CATALOG.slice();}
+function catalogById(id){for(var i=0;i<CATALOG.length;i++){if(CATALOG[i].id===id)return CATALOG[i];}return null;}
+function buildRoutine(){
+    var list=[];
+    for(var i=0;i<state.routine.length;i++){
+        if(state.routine[i].on){var ex=catalogById(state.routine[i].id);if(ex)list.push(ex);}
+    }
+    if(list.length===0)list=defaultRoutineExercises();
+    EXERCISES=list;
+}
+var MAX_ROUTINES=10;
+/* Routines enregistrees : liste de {name, routine, def}. Nettoyage defensif au chargement. */
+function normalizeRoutines(raw){
+    var out=[];
+    if(!raw||!raw.length)return out;
+    for(var i=0;i<raw.length&&out.length<MAX_ROUTINES;i++){
+        var r=raw[i];
+        if(!r||typeof r.name!=="string"||!r.name.trim()||!Array.isArray(r.routine))continue;
+        out.push({name:r.name.trim().slice(0,28),routine:normalizeRoutine(r.routine),def:r.def===true});
+    }
+    var seenDef=false;
+    for(var j=0;j<out.length;j++){
+        if(out[j].def){if(seenDef)out[j].def=false;else seenDef=true;}
+    }
+    if(!seenDef&&out.length)out[0].def=true;
+    return out;
+}
+function cloneRoutine(r){var c=[];for(var i=0;i<r.length;i++){c.push({id:r[i].id,on:r[i].on});}return c;}
+/* Routine par defaut : les 9 exercices d'origine actifs, le reste de la banque disponible mais desactive */
+var ROUTINE_BASE=["respiration","bassin","chat-vache","bird-dog","hanches","thoracique","pont-fessier","epaules","etirements"];
+function defaultRoutine(){
+    var r=[],i;
+    for(i=0;i<ROUTINE_BASE.length;i++){if(catalogById(ROUTINE_BASE[i]))r.push({id:ROUTINE_BASE[i],on:true});}
+    for(i=0;i<CATALOG.length;i++){if(ROUTINE_BASE.indexOf(CATALOG[i].id)===-1)r.push({id:CATALOG[i].id,on:false});}
+    return r;
+}
+/* Nettoie une routine venant du stockage : ids inconnus ecartes, exercices manquants ajoutes a la fin (desactives) */
+function normalizeRoutine(raw){
+    if(!raw||!raw.length)return defaultRoutine();
+    var out=[],seen={};
+    for(var i=0;i<raw.length;i++){
+        var it=raw[i];
+        if(!it||typeof it.id!=="string")continue;
+        if(seen[it.id]||!catalogById(it.id))continue;
+        seen[it.id]=true;out.push({id:it.id,on:it.on!==false});
+    }
+    for(var j=0;j<CATALOG.length;j++){
+        if(!seen[CATALOG[j].id])out.push({id:CATALOG[j].id,on:false});
+    }
+    return out.length?out:defaultRoutine();
+}
+
 var TRANSITION_DURATION = 10;
-/* La Respiration (exercice 1) reste toujours a 60 s, quelle que soit la duree choisie */
-function getExDuration(index){return index===0?60:(state.exerciseDuration||EXERCISES[index].duration);}
+/* La Respiration reste toujours a 60 s, quelle que soit la duree choisie */
+function getExDuration(index){var ex=EXERCISES[index];if(!ex)return 60;return ex.id==="respiration"?60:(state.exerciseDuration||ex.duration);}
 var CIRCUMFERENCE=2*Math.PI*70;
 var FALLBACK_COLORS=[["#D98350","#89C7E8"],["#89C7E8","#F0C49A"],["#5D7E9C","#FFE8D6"],["#D98350","#F0C49A"],["#89C7E8","#A3C4D8"],["#5D7E9C","#F0C49A"],["#D98350","#89C7E8"],["#89C7E8","#FDF1E3"],["#5D7E9C","#F0C49A"]];
 var QUOTES=["Une petite victoire chaque matin construit une grande victoire demain.","Le corps est ton temple. Prends-en soin chaque jour.","Chaque matin est une page blanche. Écris quelque chose de beau.","La constance bat l'intensité. Chaque jour compte.","Commencer est la moitie du chemin.","Ton corps t'a porté jusqu'ici. Remercie-le.","Pas besoin d'être parfait. Juste présent.","Un matin de plus, un pas de plus.","La discipline est un choix quotidien, pas un talent.","Prends soin de toi d'abord. Le reste suivra.","Le mouvement est un remerciement adressé à ton corps.","Rien de grand ne se construit sans habitude."];
@@ -210,6 +289,8 @@ var state={
     voiceEnabled:true,
     volume:0.8,
     exerciseDuration:60,
+    routine:[],
+    routines:[],
     sessions:[],
     calYear:new Date().getFullYear(),
     calMonth:new Date().getMonth(),
@@ -217,8 +298,12 @@ var state={
 };
 
 var STORAGE_KEY="morning_ninja_data";
-function loadData(){try{var raw=localStorage.getItem(STORAGE_KEY);if(raw){var data=JSON.parse(raw);state.sessions=Array.isArray(data.sessions)?data.sessions:[];state.voiceEnabled=data.voiceEnabled!==undefined?data.voiceEnabled:true;state.volume=data.volume!==undefined?data.volume:0.8;state.exerciseDuration=(data.exerciseDuration===60||data.exerciseDuration===90||data.exerciseDuration===120)?data.exerciseDuration:60;}}catch(e){state.sessions=[];}}
-function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({sessions:state.sessions,voiceEnabled:state.voiceEnabled,volume:state.volume,exerciseDuration:state.exerciseDuration}));}catch(e){}}
+function loadData(){try{var raw=localStorage.getItem(STORAGE_KEY);if(raw){var data=JSON.parse(raw);state.sessions=Array.isArray(data.sessions)?data.sessions:[];state.voiceEnabled=data.voiceEnabled!==undefined?data.voiceEnabled:true;state.volume=data.volume!==undefined?data.volume:0.8;state.exerciseDuration=(data.exerciseDuration===60||data.exerciseDuration===90||data.exerciseDuration===120)?data.exerciseDuration:60;state.routine=normalizeRoutine(data.routine);state.routines=normalizeRoutines(data.routines);}else{state.routine=defaultRoutine();}}catch(e){state.sessions=[];state.routine=defaultRoutine();}
+    if(!state.routine.length)state.routine=defaultRoutine();
+    /* Premiere ouverture apres mise a jour : la composition actuelle devient la routine par defaut */
+    if(!state.routines.length)state.routines=[{name:"Ma routine",routine:cloneRoutine(state.routine),def:true}];
+    buildRoutine();}
+function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({sessions:state.sessions,voiceEnabled:state.voiceEnabled,volume:state.volume,exerciseDuration:state.exerciseDuration,routine:state.routine,routines:state.routines}));}catch(e){}}
 
 function getFallbackSvg(index){var colors=FALLBACK_COLORS[index]||FALLBACK_COLORS[0];var id="fb"+index;return '<div class="fallback-svg"><svg viewBox="0 0 160 160" fill="none"><defs><linearGradient id="'+id+'-g1" x1="0" y1="0" x2="160" y2="160" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="'+colors[0]+'" stop-opacity="0.25"/><stop offset="100%" stop-color="'+colors[1]+'" stop-opacity="0.12"/></linearGradient></defs><circle cx="80" cy="80" r="70" fill="url(#'+id+'-g1)"/><circle cx="80" cy="80" r="50" stroke="'+colors[0]+'" stroke-width="2" stroke-opacity="0.3" fill="none"/><circle cx="80" cy="80" r="28" stroke="'+colors[0]+'" stroke-width="1.5" stroke-opacity="0.2" fill="none"/><circle cx="80" cy="80" r="6" fill="'+colors[0]+'" opacity="0.4"/></svg></div>';}
 
@@ -226,7 +311,7 @@ function setIllustration(index){
     var container=document.getElementById("routine-illustration");
     container.innerHTML = getFallbackSvg(index);
     var img = document.createElement("img");
-    img.src = IMAGES[index];
+    img.src = EXERCISES[index].img;
     img.alt = EXERCISES[index].name;
     img.onload = function(){
         this.classList.add("loaded");
@@ -438,7 +523,7 @@ function speak(text){
     }catch(e){}
 }
 var appEl=document.getElementById("app");var navEl=document.getElementById("nav");
-function showScreen(name){state.currentScreen=name;var isImmersive=(name==="ready"||name==="go"||name==="countdown"||name==="routine"||name==="end");appEl.classList.toggle("fullscreen",isImmersive);navEl.classList.toggle("hidden",isImmersive);var screens=document.querySelectorAll(".screen");for(var i=0;i<screens.length;i++){screens[i].classList.remove("active");}var target=document.getElementById("screen-"+name);if(target)target.classList.add("active");var navBtns=document.querySelectorAll(".nav-btn");for(var j=0;j<navBtns.length;j++){navBtns[j].classList.toggle("active",navBtns[j].dataset.screen===name);}if(name==="home")refreshHome();if(name==="history")refreshHistory();if(name==="calendar")refreshCalendar();if(name==="settings")refreshSettings();}
+function showScreen(name){state.currentScreen=name;var isImmersive=(name==="ready"||name==="go"||name==="countdown"||name==="routine"||name==="end");appEl.classList.toggle("fullscreen",isImmersive);navEl.classList.toggle("hidden",isImmersive);var screens=document.querySelectorAll(".screen");for(var i=0;i<screens.length;i++){screens[i].classList.remove("active");}var target=document.getElementById("screen-"+name);if(target)target.classList.add("active");var navBtns=document.querySelectorAll(".nav-btn");for(var j=0;j<navBtns.length;j++){navBtns[j].classList.toggle("active",navBtns[j].dataset.screen===name);}if(name==="home")refreshHome();if(name==="routine-edit")refreshRoutineEdit();if(name==="history")refreshHistory();if(name==="calendar")refreshCalendar();if(name==="settings")refreshSettings();}
 var navBtns=document.querySelectorAll(".nav-btn");for(var n=0;n<navBtns.length;n++){navBtns[n].addEventListener("click",function(){if(state.timerInterval){clearInterval(state.timerInterval);state.timerInterval=null;speechSynthesis.cancel();}releaseWakeLock();showScreen(this.dataset.screen);});}
 function refreshHome(){
     var streak=calcStreak().current;var el=document.getElementById("home-streak");
@@ -619,7 +704,10 @@ function calcStats(){
     for(var i=0;i<sorted.length;i++){if(!seen[sorted[i]]){seen[sorted[i]]=true;unique.push(sorted[i]);}}
     if(unique.length===0)return{hours:"0 min",perWeek:"0",bestMonth:"\u2014",bestCount:0};
     /* Duree estimee d'une seance : 9 exercices + 8 mises en place de 10 s */
-    var perSession=(8*(state.exerciseDuration||60)+60+8*TRANSITION_DURATION)/60;
+    var secs=0;
+    for(var q=0;q<EXERCISES.length;q++){secs+=(EXERCISES[q].id==="respiration"?60:(state.exerciseDuration||60));}
+    secs+=Math.max(0,EXERCISES.length-1)*TRANSITION_DURATION;
+    var perSession=secs/60;
     var totalMin=Math.round(unique.length*perSession);
     var hours=totalMin<60?totalMin+" min":Math.floor(totalMin/60)+" h"+(totalMin%60>0?" "+pad2(totalMin%60):"");
     /* Moyenne par semaine depuis la premiere seance */
@@ -638,7 +726,103 @@ function calcStats(){
     return{hours:hours,perWeek:perWeek,bestMonth:bm,bestCount:bestKey?counts[bestKey]:0};
 }
 function calcStreak(){if(state.sessions.length===0)return{current:0,best:0};var dates=state.sessions.slice().sort();var unique=[dates[0]];for(var i=1;i<dates.length;i++){if(dates[i]!==dates[i-1])unique.push(dates[i]);}var today=todayStr();var yesterday=dateStr(new Date(Date.now()-86400000));var current=0;if(unique[unique.length-1]===today||unique[unique.length-1]===yesterday){var checkDate=new Date(unique[unique.length-1]+"T12:00:00");for(var j=unique.length-1;j>=0;j--){var expected=dateStr(checkDate);if(unique[j]===expected){current++;checkDate.setDate(checkDate.getDate()-1);}else{break;}}}var best=0,temp=1;for(var k=1;k<unique.length;k++){var prev=new Date(unique[k-1]+"T12:00:00");var curr=new Date(unique[k]+"T12:00:00");var diffDays=Math.round((curr-prev)/86400000);if(diffDays===1){temp++;}else{if(temp>best)best=temp;temp=1;}}if(temp>best)best=temp;return{current:current,best:best};}
+function refreshRoutineEdit(){renderRoutine();renderRoutinesSaved();}
 function refreshSettings(){document.getElementById("setting-voice").checked=state.voiceEnabled;document.getElementById("setting-volume").value=state.volume;var durBtns=document.querySelectorAll(".dur-btn");for(var d=0;d<durBtns.length;d++){durBtns[d].classList.toggle("active",parseInt(durBtns[d].dataset.dur,10)===state.exerciseDuration);}}
+function renderRoutine(){
+    var box=document.getElementById("routine-list");
+    var actifs=0;
+    for(var a=0;a<state.routine.length;a++){if(state.routine[a].on)actifs++;}
+    var h="";
+    for(var i=0;i<state.routine.length;i++){
+        var it=state.routine[i];var ex=catalogById(it.id);if(!ex)continue;
+        var seul=it.on&&actifs<=1;
+        h+='<div class="rt-row'+(it.on?"":" off")+'">'
+          +'<input type="checkbox" class="rt-check" data-i="'+i+'"'+(it.on?" checked":"")+(seul?" disabled":"")+' aria-label="'+ex.name+'">'
+          +'<span class="rt-name">'+ex.name+'</span>'
+          +'<button class="rt-btn" data-up="'+i+'"'+(i===0?" disabled":"")+' aria-label="Monter">&#8593;</button>'
+          +'<button class="rt-btn" data-down="'+i+'"'+(i===state.routine.length-1?" disabled":"")+' aria-label="Descendre">&#8595;</button>'
+          +'</div>';
+    }
+    box.innerHTML=h;
+    var mins=0;
+    for(var k=0;k<EXERCISES.length;k++){mins+=(EXERCISES[k].id==="respiration"?60:state.exerciseDuration);}
+    mins+=Math.max(0,EXERCISES.length-1)*TRANSITION_DURATION;
+    var m=Math.floor(mins/60),s=mins%60;
+    document.getElementById("routine-hint").textContent=actifs+" exercice"+(actifs>1?"s":"")+" \u00B7 environ "+m+" min"+(s?" "+s:"");
+}
+function escapeHtml(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function renderRoutinesSaved(){
+    var box=document.getElementById("routines-saved");
+    var h="";
+    for(var i=0;i<state.routines.length;i++){
+        var r=state.routines[i];
+        h+='<span class="rs-chip'+(r.def?" is-def":"")+'">'
+          +'<button class="rs-load" data-load="'+i+'">'+escapeHtml(r.name)+'</button>';
+        if(r.def){
+            /* Routine de reference : etoile simple indicateur, aucune suppression possible */
+            h+='<span class="rs-mini on" aria-hidden="true" title="Routine de référence">&#9733;</span>';
+        } else {
+            h+='<button class="rs-mini" data-star="'+i+'" aria-label="Définir comme référence" title="Définir comme référence">&#9733;</button>'
+              +'<button class="rs-mini" data-del="'+i+'" aria-label="Supprimer" title="Supprimer">&#10005;</button>';
+        }
+        h+='</span>';
+    }
+    box.innerHTML=h;
+    document.getElementById("btn-save-routine").style.display=(state.routines.length>=MAX_ROUTINES)?"none":"";
+}
+document.getElementById("routines-saved").addEventListener("click",function(e){
+    var t=e.target;
+    if(t.dataset.load!==undefined){
+        var li=parseInt(t.dataset.load,10);var r=state.routines[li];if(!r)return;
+        state.routine=normalizeRoutine(cloneRoutine(r.routine));
+        buildRoutine();saveData();renderRoutine();
+        document.getElementById("routine-hint").textContent+=" \u00B7 "+r.name+" charg\u00e9e";
+    } else if(t.dataset.star!==undefined){
+        var si=parseInt(t.dataset.star,10);
+        for(var k=0;k<state.routines.length;k++){state.routines[k].def=(k===si);}
+        saveData();renderRoutinesSaved();
+    } else if(t.dataset.del!==undefined){
+        var di=parseInt(t.dataset.del,10);var rd=state.routines[di];if(!rd||rd.def)return;
+        showModal("Supprimer","Supprimer la routine « "+rd.name+" » ? Votre composition actuelle n\'est pas modifiée.",function(){
+            var wasDef=state.routines[di].def;
+            state.routines.splice(di,1);
+            if(wasDef&&state.routines.length)state.routines[0].def=true;
+            saveData();renderRoutinesSaved();
+        });
+    }
+});
+document.getElementById("btn-save-routine").addEventListener("click",function(){
+    showPrompt("Enregistrer","Donne un nom à cette composition.","Nom de la routine",function(nom){
+        nom=(nom||"").slice(0,28);
+        if(!nom)return;
+        var existant=-1;
+        for(var i=0;i<state.routines.length;i++){if(state.routines[i].name.toLowerCase()===nom.toLowerCase())existant=i;}
+        if(existant>=0){
+            setTimeout(function(){
+                showModal("Remplacer","Une routine « "+nom+" » existe déjà. La remplacer par votre composition actuelle ?",function(){
+                    state.routines[existant].routine=cloneRoutine(state.routine);
+                    saveData();renderRoutinesSaved();
+                });
+            },350);
+            return;
+        }
+        state.routines.push({name:nom,routine:cloneRoutine(state.routine),def:state.routines.length===0});
+        saveData();renderRoutinesSaved();
+    });
+});
+document.getElementById("routine-list").addEventListener("click",function(e){
+    var t=e.target;var changed=false;
+    if(t.classList.contains("rt-check")){
+        var i=parseInt(t.dataset.i,10);state.routine[i].on=t.checked;changed=true;
+    } else if(t.dataset.up!==undefined){
+        var u=parseInt(t.dataset.up,10);
+        if(u>0){var tmp=state.routine[u-1];state.routine[u-1]=state.routine[u];state.routine[u]=tmp;changed=true;}
+    } else if(t.dataset.down!==undefined){
+        var d=parseInt(t.dataset.down,10);
+        if(d<state.routine.length-1){var tm=state.routine[d+1];state.routine[d+1]=state.routine[d];state.routine[d]=tm;changed=true;}
+    }
+    if(changed){buildRoutine();saveData();renderRoutine();}
+});
 var durBtnsInit=document.querySelectorAll(".dur-btn");for(var db=0;db<durBtnsInit.length;db++){durBtnsInit[db].addEventListener("click",function(){state.exerciseDuration=parseInt(this.dataset.dur,10);saveData();refreshSettings();});}
 document.getElementById("setting-voice").addEventListener("change",function(){state.voiceEnabled=this.checked;saveData();});
 document.getElementById("setting-volume").addEventListener("input",function(){state.volume=parseFloat(this.value);saveData();});
@@ -648,7 +832,7 @@ document.getElementById("btn-reset").addEventListener("click",function(){showMod
 function backupStatus(msg){var el=document.getElementById("backup-status");el.textContent=msg;el.style.display="block";}
 document.getElementById("btn-export").addEventListener("click",function(){
     try{
-        var payload={app:"morning-ninja",format:1,exportedAt:new Date().toISOString(),data:{sessions:state.sessions,voiceEnabled:state.voiceEnabled,volume:state.volume,exerciseDuration:state.exerciseDuration}};
+        var payload={app:"morning-ninja",format:1,exportedAt:new Date().toISOString(),data:{sessions:state.sessions,voiceEnabled:state.voiceEnabled,volume:state.volume,exerciseDuration:state.exerciseDuration,routine:state.routine,routines:state.routines}};
         var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
         var a=document.createElement("a");
         a.href=URL.createObjectURL(blob);
@@ -678,6 +862,8 @@ document.getElementById("import-file").addEventListener("change",function(){
                 if(d.voiceEnabled!==undefined)state.voiceEnabled=!!d.voiceEnabled;
                 if(typeof d.volume==="number"&&d.volume>=0&&d.volume<=1)state.volume=d.volume;
                 if(d.exerciseDuration===60||d.exerciseDuration===90||d.exerciseDuration===120)state.exerciseDuration=d.exerciseDuration;
+                if(Array.isArray(d.routine)&&d.routine.length){state.routine=normalizeRoutine(d.routine);buildRoutine();}
+                if(Array.isArray(d.routines)&&d.routines.length){var imp=normalizeRoutines(d.routines);if(imp.length)state.routines=imp;}
                 saveData();refreshSettings();
                 backupStatus("Import réussi : "+state.sessions.length+" séance"+(state.sessions.length>1?"s":"")+" au total.");
             });
@@ -688,9 +874,20 @@ document.getElementById("import-file").addEventListener("change",function(){
 });
 /* ===== Fin sauvegarde ===== */
 var modalCallback=null;
-function showModal(title,text,onConfirm){document.getElementById("modal-title").textContent=title;document.getElementById("modal-text").textContent=text;modalCallback=onConfirm;document.getElementById("modal").classList.add("active");}
-function hideModal(){document.getElementById("modal").classList.remove("active");modalCallback=null;}
+function showModal(title,text,onConfirm){document.getElementById("modal-title").textContent=title;document.getElementById("modal-text").textContent=text;document.getElementById("modal-input").style.display="none";document.getElementById("modal").classList.remove("with-input");modalCallback=onConfirm;document.getElementById("modal").classList.add("active");}
+/* Fenetre avec champ de saisie : le callback recoit le texte saisi */
+function showPrompt(title,text,placeholder,onConfirm){
+    document.getElementById("modal-title").textContent=title;
+    document.getElementById("modal-text").textContent=text;
+    var inp=document.getElementById("modal-input");
+    inp.value="";inp.placeholder=placeholder||"";inp.style.display="block";
+    document.getElementById("modal").classList.add("with-input","active");
+    modalCallback=function(){onConfirm((inp.value||"").trim());};
+    setTimeout(function(){try{inp.focus();}catch(e){}},250);
+}
+function hideModal(){var m=document.getElementById("modal");m.classList.remove("active","with-input");document.getElementById("modal-input").style.display="none";modalCallback=null;}
 document.getElementById("modal-cancel").addEventListener("click",hideModal);
+document.getElementById("modal-input").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();document.getElementById("modal-confirm").click();}});
 document.getElementById("modal-confirm").addEventListener("click",function(){if(modalCallback)modalCallback();hideModal();});
 document.getElementById("modal").addEventListener("click",function(e){if(e.target===this)hideModal();});
 function todayStr(){return dateStr(new Date());}
