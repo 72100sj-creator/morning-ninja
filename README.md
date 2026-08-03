@@ -88,21 +88,6 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 
 ---
 
-## 🔄 Mettre à jour l'application
-
-1. Déposer les fichiers modifiés à la racine du dépôt (glisser-déposer sur GitHub).
-2. Attendre 1 à 2 minutes que GitHub Pages publie.
-3. Fermer complètement l'application sur le téléphone, puis la rouvrir.
-4. Vérifier le numéro de version affiché sur l'écran d'accueil.
-
-**Quatre règles à respecter :**
-
-- Le numéro de version en bas de l'accueil (`index.html`, classe `home-version`) doit être incrémenté à chaque livraison : c'est le témoin fiable qu'une mise à jour est bien arrivée.
-- Si un **son, une image ou une icône** est modifié, il faut aussi changer la valeur de `CACHE_NAME` dans `sw.js` (ex. `morning-ninja-v3.8` → `morning-ninja-v3.9`). Sans cela, les appareils continueraient d'afficher les anciens fichiers gardés en réserve hors-ligne. Le fichier `index.html` est, lui, toujours rechargé depuis le réseau : il n'est jamais servi en version périmée.
-- Pour ajouter un exercice : déposer sa photo (`exercise-N.jpg`, carrée, 800×800) puis ajouter son entrée dans le tableau `CATALOG` d'`index.html` — identifiant unique, nom affiché, nom prononcé, texte vocal, consigne, et `switchSides:true` si l'exercice se fait des deux côtés. Un exercice ajouté apparaît désactivé dans les routines existantes : aucune routine n'est modifiée à l'insu de l'utilisateur.
-- Si l'**icône** change, il faut lui donner un **nouveau nom de fichier** (ex. `icon-ios-v2.png` → `icon-ios-v3.png`) et mettre à jour `index.html`, `manifest.json` et `sw.js`. iOS mémorise l'icône par son nom : à nom identique, l'ancienne image resterait affichée indéfiniment.
-
----
 
 ## 🧭 Principes de développement
 
