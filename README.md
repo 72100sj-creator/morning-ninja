@@ -6,7 +6,7 @@ Morning Ninja est une application web (PWA) de routine matinale : 9 exercices de
 
 👉 **[Ouvrir l'application](https://72100sj-creator.github.io/morning-ninja/)**
 
-Version actuelle : **v3.8**
+Version actuelle : **v4.5**
 
 ---
 
@@ -14,7 +14,8 @@ Version actuelle : **v3.8**
 
 **La séance**
 - 9 exercices de mobilité enchaînés, avec photo, consigne et minuteur circulaire
-- Annonces vocales à chaque exercice (synthèse vocale du navigateur)
+- Annonces vocales à chaque exercice (synthèse vocale du navigateur), avec annonce « Change de côté » à mi-parcours sur les exercices concernés
+- Rappels pour la montre connectée : démarrer l'activité au lancement, l'enregistrer à la fin
 - Gong sonore aux transitions et carillon zen de réussite en fin de séance
 - Boutons Précédent / Suivant et pause à tout moment
 - Durée réglable : 60, 90 ou 120 secondes par exercice (la Respiration reste toujours à 60 s)
@@ -43,6 +44,10 @@ Version actuelle : **v3.8**
 
 > ⚠️ Sur iPhone, ne pas supprimer puis réinstaller l'icône : l'application réinstallée repartirait d'un historique vide. Faire un export de ses données avant toute manipulation de ce type.
 
+### 🎧 Améliorer la voix (iPhone)
+
+*Réglages → Accessibilité → Contenu énoncé → Voix → Français* : télécharger une voix marquée **Améliorée** ou **Premium**. L'application l'utilise automatiquement, la différence de qualité est très nette.
+
 ---
 
 ## 🔐 Données personnelles
@@ -65,7 +70,7 @@ Sont enregistrés :
 | `index.html` | Toute l'application (HTML, CSS et JavaScript dans un seul fichier) |
 | `sw.js` | Service worker : gère le mode hors-ligne |
 | `manifest.json` | Carte d'identité de la PWA (nom, couleurs, orientation portrait) |
-| `apple-touch-icon.png` | Icône iOS (180×180) |
+| `icon-ios-v2.png` | Icône iOS (180×180) |
 | `icon-512.png` | Icône PWA standard (512×512) |
 | `sound-ding.mp3` | Gong des transitions |
 | `sound-success.mp3` | Carillon de fin de séance |
@@ -82,10 +87,11 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 3. Fermer complètement l'application sur le téléphone, puis la rouvrir.
 4. Vérifier le numéro de version affiché sur l'écran d'accueil.
 
-**Deux règles à respecter :**
+**Trois règles à respecter :**
 
 - Le numéro de version en bas de l'accueil (`index.html`, classe `home-version`) doit être incrémenté à chaque livraison : c'est le témoin fiable qu'une mise à jour est bien arrivée.
 - Si un **son, une image ou une icône** est modifié, il faut aussi changer la valeur de `CACHE_NAME` dans `sw.js` (ex. `morning-ninja-v3.8` → `morning-ninja-v3.9`). Sans cela, les appareils continueraient d'afficher les anciens fichiers gardés en réserve hors-ligne. Le fichier `index.html` est, lui, toujours rechargé depuis le réseau : il n'est jamais servi en version périmée.
+- Si l'**icône** change, il faut lui donner un **nouveau nom de fichier** (ex. `icon-ios-v2.png` → `icon-ios-v3.png`) et mettre à jour `index.html`, `manifest.json` et `sw.js`. iOS mémorise l'icône par son nom : à nom identique, l'ancienne image resterait affichée indéfiniment.
 
 ---
 
@@ -102,6 +108,12 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 
 | Version | Évolution |
 |---|---|
+| v4.5 | Noms prononcés distincts des noms affichés ; correction du dernier mot tronqué sur iOS |
+| v4.4 | Prononciation améliorée : ponctuation, débit plus posé, tutoiement cohérent |
+| v4.3 | Exercice 5 corrigé (fente basse) et annonce « Change de côté » à mi-parcours |
+| v4.1 | Icône renommée pour contourner la mémoire d'iOS |
+| v4.0 | La durée d'exercice entre dans la sauvegarde |
+| v3.9 | Rappels pour la montre connectée |
 | v3.8 | Nouvelles photos pour les exercices 2, 8 et 9 |
 | v3.7 | Cartes de statistiques compactées (toutes visibles d'un coup) |
 | v3.6 | Statistiques enrichies : temps de mobilité, séances par semaine, meilleur mois |
@@ -128,12 +140,15 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 
 ## 💡 Pistes d'évolution
 
-- Jalons et badges de progression (7, 30, 50, 100 séances)
-- Mode sombre automatique
-- Activation / désactivation de certains exercices
+- Composer sa routine : activer, désactiver et réordonner les exercices
+- Banque d'exercices élargie, puis plusieurs routines enregistrées et nommées
 - Choix de la voix parmi celles installées sur l'appareil
 
-*Rappel : les notifications de rappel quotidien ne sont pas réalisables pour une PWA sur iPhone sans serveur d'envoi. Une alarme dans l'application Horloge rend le même service.*
+**Écartés volontairement :**
+- *Badges et jalons de progression* : l'application se veut zen et sans pression.
+- *Mode sombre* : c'est une application du réveil, la palette claire est assumée.
+- *Notifications de rappel quotidien* : irréalisables pour une PWA sur iPhone sans serveur d'envoi. Une alarme dans l'application Horloge rend le même service.
+- *Import d'un entraînement Garmin* : Garmin Connect permet d'importer un fichier `.FIT`, pas d'exporter une séance créée ; et le format ne transporterait ni les photos, ni les consignes, ni les textes de la voix. Le fichier de sauvegarde de l'application couvre déjà ce besoin.
 
 ---
 
