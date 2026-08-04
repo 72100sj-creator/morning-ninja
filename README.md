@@ -4,9 +4,9 @@
 
 Morning Ninja est une application web (PWA) de routine matinale : une routine d'exercices de mobilité guidés, composée à la carte dans une banque de 26 exercices, avec minuteur, annonces vocales, suivi de progression et mode hors-ligne.
 
-👉 **[Ouvrir l'application](https://72100sj-creator.github.io/morning-ninja/)**
+👉 **[Ouvrir l'application](https://72100sj-creator.github.io/morning-ninja/)** &nbsp;·&nbsp; 📖 **[Le guide des exercices](https://72100sj-creator.github.io/morning-ninja/guide.html)**
 
-Version actuelle : **v5.1**
+Version actuelle : **v5.3**
 
 ---
 
@@ -14,7 +14,7 @@ Version actuelle : **v5.1**
 
 **La séance**
 - Enchaînement d'exercices de mobilité, avec photo, consigne et minuteur circulaire
-- Annonces vocales à chaque exercice (synthèse vocale du navigateur), avec annonce « Change de côté » à mi-parcours sur les exercices concernés
+- Annonces vocales à chaque exercice (synthèse vocale du navigateur), avec « Change de côté » ou « Change de sens » à mi-parcours sur les exercices concernés
 - Rappels pour la montre connectée : démarrer l'activité au lancement, l'enregistrer à la fin
 - Gong sonore aux transitions et carillon zen de réussite en fin de séance
 - Boutons Précédent / Suivant et pause à tout moment
@@ -28,6 +28,10 @@ Version actuelle : **v5.1**
 - Enregistrer plusieurs routines nommées (« Réveil court », « Dimanche long »…) et les charger d'un appui
 - Une routine porte une ★ : c'est la routine de référence, elle ne peut pas être supprimée
 - La routine par défaut reprend les 9 exercices d'origine ; les autres restent disponibles, désactivés
+
+**Le guide des exercices**
+- Une page illustrée détaillant les 26 exercices : à quoi sert chaque mouvement, son déroulé en trois étapes, le conseil qui change tout et l'erreur à éviter
+- Accessible depuis les Paramètres, consultable hors connexion
 
 **Le suivi**
 - Série en cours (streak) sur l'accueil et sur l'écran de fin
@@ -76,6 +80,7 @@ Sont enregistrés :
 | Fichier | Rôle |
 |---|---|
 | `index.html` | Toute l'application (HTML, CSS et JavaScript dans un seul fichier) |
+| `guide.html` | Le guide des exercices (page indépendante) |
 | `sw.js` | Service worker : gère le mode hors-ligne |
 | `manifest.json` | Carte d'identité de la PWA (nom, couleurs, orientation portrait) |
 | `icon-ios-v2.png` | Icône iOS (180×180) |
@@ -88,6 +93,21 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 
 ---
 
+## 🔄 Mettre à jour l'application
+
+1. Déposer les fichiers modifiés à la racine du dépôt (glisser-déposer sur GitHub).
+2. Attendre 1 à 2 minutes que GitHub Pages publie.
+3. Fermer complètement l'application sur le téléphone, puis la rouvrir.
+4. Vérifier le numéro de version affiché sur l'écran d'accueil.
+
+**Quatre règles à respecter :**
+
+- Le numéro de version en bas de l'accueil (`index.html`, classe `home-version`) doit être incrémenté à chaque livraison : c'est le témoin fiable qu'une mise à jour est bien arrivée.
+- Si un **son, une image ou une icône** est modifié, il faut aussi changer la valeur de `CACHE_NAME` dans `sw.js` (ex. `morning-ninja-v3.8` → `morning-ninja-v3.9`). Sans cela, les appareils continueraient d'afficher les anciens fichiers gardés en réserve hors-ligne. Le fichier `index.html` est, lui, toujours rechargé depuis le réseau : il n'est jamais servi en version périmée.
+- Pour ajouter ou modifier un exercice : déposer sa photo (`exercise-N.jpg`, carrée, 800×800) puis mettre à jour son entrée dans le tableau `CATALOG` d'`index.html` — identifiant unique, nom affiché, nom prononcé, texte vocal, consigne, et `midCue` pour l'annonce de mi-parcours (« Change de côté. » ou « Change de sens. ») si l'exercice l'exige. Un exercice ajouté apparaît désactivé dans les routines existantes : aucune routine n'est modifiée à l'insu de l'utilisateur. **Ne jamais changer l'identifiant d'un exercice existant** : il est référencé dans les routines enregistrées des utilisateurs. Penser aussi à mettre à jour sa fiche dans `guide.html`.
+- Si l'**icône** change, il faut lui donner un **nouveau nom de fichier** (ex. `icon-ios-v2.png` → `icon-ios-v3.png`) et mettre à jour `index.html`, `manifest.json` et `sw.js`. iOS mémorise l'icône par son nom : à nom identique, l'ancienne image resterait affichée indéfiniment.
+
+---
 
 ## 🧭 Principes de développement
 
@@ -102,6 +122,8 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 
 | Version | Évolution |
 |---|---|
+| v5.3 | « Mobilité thoracique » devient « Livre ouvert » : photo et consignes plus parlantes |
+| v5.2 | Guide accessible depuis les Paramètres et disponible hors connexion ; annonces de mi-parcours complétées |
 | v5.1 | La routine de référence ne peut plus être supprimée |
 | v5.0 | Les 26 exercices de la banque disponibles ; onglet « Ma routine » dédié |
 | v4.9 | Correction du défilement des pages longues et de l'enregistrement des routines |
