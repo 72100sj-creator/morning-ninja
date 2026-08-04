@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide des exercices &mdash; Morning Ninja</title>
+<meta name="description" content="Le guide des 26 exercices de Morning Ninja : à quoi sert chaque mouvement, comment le faire, et le conseil qui change tout.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="icon-ios-v2.png">
+<style>
+:root{--bg-warm:#FDF1E3;--fg:#2B2B36;--fg-muted:#5C6B7A;--accent:#D98350;--accent-light:#F0C49A;--accent-glow:rgba(217,131,80,0.15);--card:#FFFFFF;--border:#E1E8EE;--success:#6A9B4A;--radius:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;color:var(--fg);background:linear-gradient(180deg,#89C7E8 0%,#B6E0F5 22%,#FFE8D6 55%,var(--bg-warm) 100%);background-attachment:fixed;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px 64px}
+header{text-align:center;padding:56px 0 32px}
+.mark{width:76px;height:76px;border-radius:22px;margin:0 auto 18px;display:block;box-shadow:0 8px 30px rgba(43,43,54,.16)}
+h1{font-size:32px;font-weight:900;letter-spacing:-.5px}
+.sub{color:var(--fg-muted);font-size:15px;font-weight:600;margin-top:8px}
+.intro{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:28px;box-shadow:0 4px 20px rgba(43,43,54,.06)}
+.intro h2{font-size:17px;font-weight:800;margin-bottom:10px}
+.intro p{font-size:14.5px;color:var(--fg-muted);margin-bottom:10px}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--fg)}
+.toc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:40px}
+.toc-link{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;text-decoration:none;color:var(--fg);font-size:13.5px;font-weight:700;transition:border-color .2s ease,transform .2s ease}
+.toc-link:hover,.toc-link:focus-visible{border-color:var(--accent);transform:translateY(-1px)}
+.toc-link em{margin-left:auto;font-style:normal;font-weight:800;color:var(--accent);font-size:12px}
+.famille{margin-bottom:44px;scroll-margin-top:20px}
+.famille>h2{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:900;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--accent-light)}
+.ex{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;box-shadow:0 4px 20px rgba(43,43,54,.06);scroll-margin-top:20px}
+.ex-photo{aspect-ratio:1/1;background:var(--bg-warm)}
+.ex-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.ex-body{padding:20px}
+.ex-body h3{font-size:19px;font-weight:800;margin-bottom:8px}
+.badge{display:inline-block;background:var(--accent-glow);color:var(--accent);font-size:11px;font-weight:800;padding:4px 10px;border-radius:100px;margin-bottom:10px}
+.why{font-size:14.5px;color:var(--fg-muted);margin-bottom:14px}
+.steps{list-style:none;counter-reset:s;margin-bottom:14px}
+.steps li{counter-increment:s;position:relative;padding-left:30px;font-size:14.5px;margin-bottom:7px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--accent-glow);color:var(--accent);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.tip,.warn{font-size:14px;border-radius:12px;padding:12px 14px;margin-top:8px}
+.tip{background:rgba(106,155,74,.09)}
+.warn{background:var(--accent-glow)}
+.tip span,.warn span{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px}
+.tip span{color:var(--success)}
+.warn span{color:var(--accent)}
+footer{text-align:center;padding-top:20px;border-top:1px solid var(--border);color:var(--fg-muted);font-size:13px}
+footer a{color:var(--accent);font-weight:800;text-decoration:none}
+@media(min-width:560px){.ex{display:flex}.ex-photo{width:200px;flex-shrink:0;aspect-ratio:auto}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <img class="mark" src="icon-ios-v2.png" alt="">
+  <h1>Guide des exercices</h1>
+  <p class="sub">Les 26 mouvements de Morning Ninja &mdash; &agrave; quoi ils servent, comment les faire</p>
+</header>
+
+<div class="intro">
+  <h2>Avant de commencer</h2>
+  <p><strong>Le matin, le corps est froid.</strong> Rien ici ne se force : on cherche l'amplitude confortable du jour, pas le record. Un mouvement bien fait sur dix centim&egrave;tres vaut mieux qu'un mouvement forc&eacute; sur trente.</p>
+  <p><strong>La respiration guide tout.</strong> Si tu bloques ton souffle, c'est que tu es all&eacute; trop loin. Reviens l&eacute;g&egrave;rement en arri&egrave;re jusqu'&agrave; pouvoir respirer normalement.</p>
+  <p><strong>&Eacute;tirement, oui. Douleur, non.</strong> Une sensation de tension qui reste supportable et s'estompe, c'est bon signe. Une douleur vive, un picotement ou un engourdissement : on arr&ecirc;te. En cas de probl&egrave;me persistant, un avis m&eacute;dical vaut mieux qu'une routine.</p>
+  <p><strong>La r&eacute;gularit&eacute; bat l'intensit&eacute;.</strong> Dix minutes chaque matin feront plus qu'une heure le dimanche.</p>
+</div>
+
+<nav class="toc" aria-label="Sommaire"><a class="toc-link" href="#fam-0"><span>&#129496;</span>Assis <em>6</em></a><a class="toc-link" href="#fam-1"><span>&#128564;</span>Allongé sur le dos <em>6</em></a><a class="toc-link" href="#fam-2"><span>&#128008;</span>À quatre pattes <em>5</em></a><a class="toc-link" href="#fam-3"><span>&#128013;</span>Sur le ventre <em>1</em></a><a class="toc-link" href="#fam-4"><span>&#129495;</span>Fente <em>2</em></a><a class="toc-link" href="#fam-5"><span>&#129485;</span>Debout <em>6</em></a></nav>
+
+<section class="famille" id="fam-0"><h2><span aria-hidden="true">&#129496;</span>Assis</h2>
+<article class="ex" id="respiration">
+  <div class="ex-photo"><img src="exercise-1.jpg" alt="Respiration" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Respiration</h3>
+    
+    <p class="why">Fait passer le corps du sommeil à l'éveil sans brusquerie, et pose l'attention sur la séance qui commence.</p>
+    <ol class="steps"><li>Assieds-toi confortablement, dos long, épaules relâchées.</li><li>Inspire par le nez en comptant jusqu'à 4.</li><li>Expire par la bouche en comptant jusqu'à 6, sans forcer la fin du souffle.</li></ol>
+    <p class="tip"><span>Le conseil</span>L'expiration plus longue que l'inspiration, c'est tout le secret : c'est elle qui apaise.</p>
+    <p class="warn"><span>À éviter</span>Gonfler les épaules à l'inspiration. Cherche plutôt à sentir les côtes s'ouvrir sur les côtés.</p>
+  </div>
+</article>
+<article class="ex" id="thoracique">
+  <div class="ex-photo"><img src="exercise-6.jpg" alt="Mobilité thoracique" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Mobilité thoracique</h3>
+    
+    <p class="why">Redonne de la rotation au haut du dos, la zone qui s'enraidit devant un écran.</p>
+    <ol class="steps"><li>Assieds-toi, dos droit, bassin bien stable.</li><li>Tourne le buste vers la droite en grandissant la colonne.</li><li>Reviens au centre, puis tourne vers la gauche.</li></ol>
+    <p class="tip"><span>Le conseil</span>La rotation part du sternum, pas des bras. Les bras suivent, ils ne tirent pas.</p>
+    <p class="warn"><span>À éviter</span>Faire tourner le bassin avec. Verrouille-le : c'est ce qui isole le haut du dos.</p>
+  </div>
+</article>
+<article class="ex" id="papillon-mur">
+  <div class="ex-photo"><img src="exercise-12.jpg" alt="Papillon au mur" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Papillon au mur</h3>
+    
+    <p class="why">Version exigeante de l'ouverture des hanches, avec le mur comme guide pour le dos.</p>
+    <ol class="steps"><li>Assieds-toi face au mur, plantes de pieds jointes.</li><li>Laisse les genoux s'ouvrir vers le sol.</li><li>Monte les mains le long du mur en allongeant le dos.</li></ol>
+    <p class="tip"><span>Le conseil</span>Le mur t'indique si le dos reste long. Si tu t'affaisses, éloigne-toi un peu.</p>
+    <p class="warn"><span>À éviter</span>Pousser sur les genoux pour les descendre. La pesanteur suffit, laisse faire le temps.</p>
+  </div>
+</article>
+<article class="ex" id="flexion-assise">
+  <div class="ex-photo"><img src="exercise-17.jpg" alt="Flexion avant assise" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Flexion avant assise</h3>
+    
+    <p class="why">Étire l'arrière des jambes et toute la longueur du dos.</p>
+    <ol class="steps"><li>Assis, jambes tendues devant toi.</li><li>Grandis la colonne, puis penche le buste vers les pieds.</li><li>Va seulement là où c'est confortable, et respire.</li></ol>
+    <p class="tip"><span>Le conseil</span>Penche à partir des hanches, pas des épaules : le dos reste long plutôt que rond.</p>
+    <p class="warn"><span>À éviter</span>Forcer avec les bras pour attraper les pieds. Les mains se posent là où elles arrivent.</p>
+  </div>
+</article>
+<article class="ex" id="torsion-assise">
+  <div class="ex-photo"><img src="exercise-18.jpg" alt="Torsion assise" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Torsion assise</h3>
+    <span class="badge">Des deux côtés</span>
+    <p class="why">Mobilise la colonne en rotation, avec le bassin bien calé au sol.</p>
+    <ol class="steps"><li>Assis, une jambe croisée par-dessus l'autre, pied à plat.</li><li>Tourne le buste vers le genou levé en grandissant la colonne.</li><li>Respire dans la rotation, puis change de côté.</li></ol>
+    <p class="tip"><span>Le conseil</span>À chaque inspiration, grandis-toi ; à chaque expiration, tourne d'un rien de plus.</p>
+    <p class="warn"><span>À éviter</span>Tirer sur le genou avec le bras. Le bras sert d'appui, la rotation vient du buste.</p>
+  </div>
+</article>
+<article class="ex" id="papillon-assis">
+  <div class="ex-photo"><img src="exercise-21.jpg" alt="Papillon assis" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Papillon assis</h3>
+    
+    <p class="why">Ouvre les hanches et l'intérieur des cuisses, en position stable et facile à tenir.</p>
+    <ol class="steps"><li>Assis, plantes de pieds jointes devant toi.</li><li>Rapproche les talons du bassin, dos droit.</li><li>Laisse les genoux descendre vers le sol, sans forcer.</li></ol>
+    <p class="tip"><span>Le conseil</span>Assieds-toi sur le bord d'un coussin : le bassin bascule mieux et le dos reste droit sans effort.</p>
+    <p class="warn"><span>À éviter</span>Arrondir le dos pour descendre plus bas. Mieux vaut être droit et haut que rond et bas.</p>
+  </div>
+</article></section><section class="famille" id="fam-1"><h2><span aria-hidden="true">&#128564;</span>Allongé sur le dos</h2>
+<article class="ex" id="bassin">
+  <div class="ex-photo"><img src="exercise-2.jpg" alt="Mobilisation du bassin" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Mobilisation du bassin</h3>
+    
+    <p class="why">Réveille en douceur le bas du dos, souvent raide au sortir du lit.</p>
+    <ol class="steps"><li>Allonge-toi sur le dos, genoux fléchis, pieds au sol.</li><li>Bascule le bassin pour plaquer légèrement le bas du dos au sol.</li><li>Relâche, puis laisse une petite cambrure naturelle revenir. Recommence lentement.</li></ol>
+    <p class="tip"><span>Le conseil</span>Le mouvement est minuscule — quelques centimètres suffisent. C'est la lenteur qui travaille, pas l'amplitude.</p>
+    <p class="warn"><span>À éviter</span>Pousser avec les jambes. Le mouvement vient du bassin, les pieds restent tranquilles.</p>
+  </div>
+</article>
+<article class="ex" id="pont-fessier">
+  <div class="ex-photo"><img src="exercise-7.jpg" alt="Pont fessier" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Pont fessier</h3>
+    
+    <p class="why">Active les fessiers et l'arrière des cuisses, et redonne du tonus au bassin.</p>
+    <ol class="steps"><li>Allongé sur le dos, genoux fléchis, pieds au sol largeur de hanches.</li><li>Serre les fessiers, puis décolle les hanches jusqu'à une ligne genoux-hanches-épaules.</li><li>Redescends en déroulant le dos, vertèbre après vertèbre.</li></ol>
+    <p class="tip"><span>Le conseil</span>Serre les fessiers avant de monter : la poussée vient d'eux, pas du bas du dos.</p>
+    <p class="warn"><span>À éviter</span>Monter trop haut et se cambrer. Arrête-toi quand la ligne est droite.</p>
+  </div>
+</article>
+<article class="ex" id="genoux-poitrine">
+  <div class="ex-photo"><img src="exercise-13.jpg" alt="Genoux à la poitrine" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Genoux à la poitrine</h3>
+    
+    <p class="why">Détend le bas du dos immédiatement. Un des gestes les plus reposants de la banque.</p>
+    <ol class="steps"><li>Allongé sur le dos, ramène les deux genoux vers la poitrine.</li><li>Entoure-les de tes bras, sans tirer fort.</li><li>Respire, et laisse le bas du dos s'arrondir sur le sol.</li></ol>
+    <p class="tip"><span>Le conseil</span>À l'expiration, laisse les genoux se rapprocher d'un demi-centimètre. Le corps s'ouvre tout seul.</p>
+    <p class="warn"><span>À éviter</span>Décoller la tête du sol. Laisse la nuque posée, c'est le dos qui travaille.</p>
+  </div>
+</article>
+<article class="ex" id="torsion-allongee">
+  <div class="ex-photo"><img src="exercise-14.jpg" alt="Torsion allongée" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Torsion allongée</h3>
+    <span class="badge">Des deux côtés</span>
+    <p class="why">Assouplit la colonne et ouvre la cage thoracique, en position totalement soutenue.</p>
+    <ol class="steps"><li>Allongé sur le dos, bras en croix, genoux fléchis.</li><li>Laisse les genoux basculer d'un côté, épaules au sol.</li><li>Tourne la tête du côté opposé, respire, puis change.</li></ol>
+    <p class="tip"><span>Le conseil</span>Si l'épaule opposée se décolle, réduis simplement la bascule des genoux : les épaules priment.</p>
+    <p class="warn"><span>À éviter</span>Chercher à poser les genoux au sol coûte que coûte. La torsion se mesure aux épaules, pas aux genoux.</p>
+  </div>
+</article>
+<article class="ex" id="jambe-tendue">
+  <div class="ex-photo"><img src="exercise-15.jpg" alt="Jambe tendue" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Jambe tendue</h3>
+    <span class="badge">Des deux côtés</span>
+    <p class="why">Étire l'arrière de la cuisse sans mettre le dos en jeu, contrairement aux étirements debout.</p>
+    <ol class="steps"><li>Allongé sur le dos, une jambe tendue vers le ciel.</li><li>L'autre reste au sol, tendue ou genou fléchi si c'est plus confortable.</li><li>Tiens la position, respire, puis change de côté.</li></ol>
+    <p class="tip"><span>Le conseil</span>Genou légèrement fléchi au début : tu sentiras l'étirement dans le muscle et non derrière le genou.</p>
+    <p class="warn"><span>À éviter</span>Décoller les hanches pour monter plus haut. La hanche reste posée, la jambe monte seule.</p>
+  </div>
+</article>
+<article class="ex" id="dead-bug">
+  <div class="ex-photo"><img src="exercise-16.jpg" alt="Dead bug" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Dead bug</h3>
+    
+    <p class="why">Gainage profond très sûr pour le dos : le sol soutient la colonne du début à la fin.</p>
+    <ol class="steps"><li>Allongé sur le dos, bras vers le plafond, genoux fléchis en l'air.</li><li>Tends lentement un bras derrière la tête et la jambe opposée.</li><li>Reviens, puis alterne.</li></ol>
+    <p class="tip"><span>Le conseil</span>Le bas du dos doit rester en contact avec le sol. Dès qu'il se décolle, réduis l'amplitude.</p>
+    <p class="warn"><span>À éviter</span>Aller vite. Ici, la lenteur est l'exercice — un aller-retour peut durer cinq secondes.</p>
+  </div>
+</article></section><section class="famille" id="fam-2"><h2><span aria-hidden="true">&#128008;</span>À quatre pattes</h2>
+<article class="ex" id="chat-vache">
+  <div class="ex-photo"><img src="exercise-3.jpg" alt="Chat / Vache" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Chat / Vache</h3>
+    
+    <p class="why">Mobilise toute la colonne, vertèbre après vertèbre. L'un des meilleurs réveils du dos.</p>
+    <ol class="steps"><li>Place-toi à quatre pattes, mains sous les épaules, genoux sous les hanches.</li><li>En soufflant, arrondis le dos et rentre le menton : c'est le chat.</li><li>En inspirant, laisse le ventre descendre et ouvre la poitrine : c'est la vache.</li></ol>
+    <p class="tip"><span>Le conseil</span>Synchronise avec le souffle : le mouvement suit la respiration, jamais l'inverse.</p>
+    <p class="warn"><span>À éviter</span>Aller au maximum d'amplitude. Reste dans une zone confortable, surtout les premières minutes de la journée.</p>
+  </div>
+</article>
+<article class="ex" id="bird-dog">
+  <div class="ex-photo"><img src="exercise-4.jpg" alt="Bird dog lent" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Bird dog lent</h3>
+    
+    <p class="why">Travaille l'équilibre et le gainage profond, sans à-coups ni pression sur le dos.</p>
+    <ol class="steps"><li>À quatre pattes, dos neutre, regard vers le sol.</li><li>Tends le bras droit devant et la jambe gauche derrière, à hauteur du dos.</li><li>Reviens lentement, puis change de côté.</li></ol>
+    <p class="tip"><span>Le conseil</span>Imagine un verre d'eau posé sur ton bas du dos : le but est de ne pas le renverser.</p>
+    <p class="warn"><span>À éviter</span>Monter la jambe trop haut, ce qui fait basculer le bassin et cambrer le dos.</p>
+  </div>
+</article>
+<article class="ex" id="chien-tete-bas">
+  <div class="ex-photo"><img src="exercise-19.jpg" alt="Chien tête en bas" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Chien tête en bas</h3>
+    
+    <p class="why">Réveille toute la chaîne arrière d'un coup : mollets, cuisses, dos, épaules.</p>
+    <ol class="steps"><li>À quatre pattes, cale les orteils et pousse les hanches vers le haut.</li><li>Forme un V inversé, mains bien écartées.</li><li>Pousse le sol avec les mains, talons vers le sol sans forcer.</li></ol>
+    <p class="tip"><span>Le conseil</span>Genoux fléchis au réveil : c'est le dos long qui compte, pas les talons au sol.</p>
+    <p class="warn"><span>À éviter</span>Chercher à plaquer les talons en arrondissant le dos. Le dos passe avant les talons.</p>
+  </div>
+</article>
+<article class="ex" id="enfilage-aiguille">
+  <div class="ex-photo"><img src="exercise-22.jpg" alt="Enfilage d'aiguille" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Enfilage d'aiguille</h3>
+    <span class="badge">Des deux côtés</span>
+    <p class="why">Détend le haut du dos et les épaules, une zone difficile à atteindre autrement.</p>
+    <ol class="steps"><li>À quatre pattes, glisse un bras sous le corps vers le côté opposé.</li><li>Laisse l'épaule et la tempe se poser au sol.</li><li>Respire dans le haut du dos, puis change de côté.</li></ol>
+    <p class="tip"><span>Le conseil</span>Laisse le poids faire le travail : plus tu relâches, plus l'épaule s'ouvre.</p>
+    <p class="warn"><span>À éviter</span>Écraser la nuque. C'est l'épaule et la tempe qui portent, jamais le cou.</p>
+  </div>
+</article>
+<article class="ex" id="posture-enfant">
+  <div class="ex-photo"><img src="exercise-23.jpg" alt="Posture de l'enfant" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Posture de l'enfant</h3>
+    
+    <p class="why">Position de repos par excellence : elle détend le dos, les hanches et le mental.</p>
+    <ol class="steps"><li>À genoux, assieds-toi sur les talons.</li><li>Penche le buste vers l'avant, front vers le sol.</li><li>Tends les bras devant toi et respire lentement.</li></ol>
+    <p class="tip"><span>Le conseil</span>Écarte un peu les genoux : le ventre trouve sa place et la respiration devient plus ample.</p>
+    <p class="warn"><span>À éviter</span>Aucune vraiment — c'est la posture de récupération. Utilise-la dès que tu veux souffler.</p>
+  </div>
+</article></section><section class="famille" id="fam-3"><h2><span aria-hidden="true">&#128013;</span>Sur le ventre</h2>
+<article class="ex" id="cobra">
+  <div class="ex-photo"><img src="exercise-20.jpg" alt="Cobra" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Cobra</h3>
+    
+    <p class="why">Ouvre le devant du corps et redonne de l'extension au dos, à l'opposé de la position assise.</p>
+    <ol class="steps"><li>À plat ventre, mains sous les épaules, coudes près du corps.</li><li>Redresse le buste en douceur, épaules basses et loin des oreilles.</li><li>Reste dans une zone confortable, puis redescends.</li></ol>
+    <p class="tip"><span>Le conseil</span>Pousse d'abord le sol avec les mains vers l'arrière : le dos s'allonge avant de se redresser.</p>
+    <p class="warn"><span>À éviter</span>Monter à la force des bras jusqu'à comprimer le bas du dos. Moins haut, c'est souvent mieux.</p>
+  </div>
+</article></section><section class="famille" id="fam-4"><h2><span aria-hidden="true">&#129495;</span>Fente</h2>
+<article class="ex" id="hanches">
+  <div class="ex-photo"><img src="exercise-5.jpg" alt="Ouverture des hanches" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Ouverture des hanches</h3>
+    <span class="badge">Des deux côtés</span>
+    <p class="why">Étire le devant de la cuisse et le psoas, muscle raccourci par les longues heures assises.</p>
+    <ol class="steps"><li>Place une jambe devant, genou arrière posé au sol.</li><li>Avance légèrement le bassin, buste droit, mains sur les hanches.</li><li>Respire dans la position, puis change de côté.</li></ol>
+    <p class="tip"><span>Le conseil</span>Grandis-toi vers le plafond avant d'avancer le bassin : l'étirement devient plus juste et moins forcé.</p>
+    <p class="warn"><span>À éviter</span>Cambrer le bas du dos pour aller plus loin. Rentre légèrement le bassin, tu sentiras mieux le devant de la cuisse.</p>
+  </div>
+</article>
+<article class="ex" id="fente-bras">
+  <div class="ex-photo"><img src="exercise-11.jpg" alt="Fente bras levés" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Fente bras levés</h3>
+    <span class="badge">Des deux côtés</span>
+    <p class="why">Combine l'ouverture des hanches et l'étirement des côtés du corps. Très complet le matin.</p>
+    <ol class="steps"><li>Place une jambe devant, l'autre tendue derrière.</li><li>Lève les deux bras vers le haut en te grandissant.</li><li>Respire dans la position, puis change de côté.</li></ol>
+    <p class="tip"><span>Le conseil</span>Pense « grandir » plutôt que « descendre » : c'est l'allongement qui fait tout le bien.</p>
+    <p class="warn"><span>À éviter</span>Cambrer le bas du dos en levant les bras. Engage légèrement le ventre pour rester droit.</p>
+  </div>
+</article></section><section class="famille" id="fam-5"><h2><span aria-hidden="true">&#129485;</span>Debout</h2>
+<article class="ex" id="epaules">
+  <div class="ex-photo"><img src="exercise-8.jpg" alt="Mobilité des épaules" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Mobilité des épaules</h3>
+    
+    <p class="why">Dénoue la ceinture scapulaire et la nuque, souvent tendues au réveil.</p>
+    <ol class="steps"><li>Debout, bras le long du corps, épaules relâchées.</li><li>Dessine de grands cercles lents vers l'arrière.</li><li>Change de sens à mi-parcours.</li></ol>
+    <p class="tip"><span>Le conseil</span>Cherche l'amplitude, pas la vitesse : trois grands cercles valent mieux que dix petits.</p>
+    <p class="warn"><span>À éviter</span>Monter les épaules vers les oreilles. Laisse-les redescendre entre chaque cercle.</p>
+  </div>
+</article>
+<article class="ex" id="etirements">
+  <div class="ex-photo"><img src="exercise-9.jpg" alt="Étirements doux" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Étirements doux</h3>
+    
+    <p class="why">Étire toute la chaîne arrière et clôt la séance en relâchement.</p>
+    <ol class="steps"><li>Debout, pieds largeur de hanches, genoux légèrement fléchis.</li><li>Penche-toi lentement vers l'avant en déroulant le dos.</li><li>Laisse la tête et les bras pendre, puis remonte en déroulant.</li></ol>
+    <p class="tip"><span>Le conseil</span>Genoux souples : ce sont les ischio-jambiers qui doivent s'étirer, pas le bas du dos qui doit tirer.</p>
+    <p class="warn"><span>À éviter</span>Verrouiller les genoux et rebondir. On ne rebondit jamais dans un étirement.</p>
+  </div>
+</article>
+<article class="ex" id="squat-chaise">
+  <div class="ex-photo"><img src="exercise-10.jpg" alt="Squat sur chaise" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Squat sur chaise</h3>
+    
+    <p class="why">Réveille les cuisses et les fessiers, et entretient le geste du quotidien : s'asseoir et se relever.</p>
+    <ol class="steps"><li>Debout devant une chaise, pieds largeur de hanches, bras tendus devant.</li><li>Descends lentement jusqu'à effleurer l'assise.</li><li>Remonte en poussant dans les talons.</li></ol>
+    <p class="tip"><span>Le conseil</span>La chaise n'est pas un siège, c'est un repère : effleure sans t'asseoir.</p>
+    <p class="warn"><span>À éviter</span>Laisser les genoux partir vers l'intérieur. Garde-les dans l'axe des pieds.</p>
+  </div>
+</article>
+<article class="ex" id="etirement-lateral">
+  <div class="ex-photo"><img src="exercise-24.jpg" alt="Étirement latéral" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Étirement latéral</h3>
+    <span class="badge">Des deux côtés</span>
+    <p class="why">Ouvre les côtes et les flancs, zone rarement étirée et très agréable au réveil.</p>
+    <ol class="steps"><li>Debout, pieds ancrés, un bras au-dessus de la tête.</li><li>Incline le buste sur le côté opposé, bassin stable.</li><li>Respire dans les côtes ouvertes, puis change de côté.</li></ol>
+    <p class="tip"><span>Le conseil</span>Inspire dans le côté étiré : tu sens littéralement les côtes s'écarter.</p>
+    <p class="warn"><span>À éviter</span>Se pencher vers l'avant plutôt que sur le côté. Imagine-toi entre deux vitres.</p>
+  </div>
+</article>
+<article class="ex" id="cercles-hanches">
+  <div class="ex-photo"><img src="exercise-25.jpg" alt="Cercles de hanches" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Cercles de hanches</h3>
+    
+    <p class="why">Réveille le bassin et l'équilibre, debout et sans matériel.</p>
+    <ol class="steps"><li>Debout, pieds largeur de hanches, mains sur les hanches.</li><li>Dessine des cercles lents avec le bassin.</li><li>Alterne le sens à mi-parcours.</li></ol>
+    <p class="tip"><span>Le conseil</span>Cherche des cercles ronds et réguliers plutôt que grands : c'est plus exigeant qu'il n'y paraît.</p>
+    <p class="warn"><span>À éviter</span>Bouger tout le buste. Ce sont les hanches qui dessinent, les épaules restent calmes.</p>
+  </div>
+</article>
+<article class="ex" id="deroule-pieds">
+  <div class="ex-photo"><img src="exercise-26.jpg" alt="Déroulé des pieds" loading="lazy"></div>
+  <div class="ex-body">
+    <h3>Déroulé des pieds</h3>
+    
+    <p class="why">Réveille chevilles et mollets, et relance la circulation après la nuit.</p>
+    <ol class="steps"><li>Debout, pieds parallèles, appui léger sur un mur si besoin.</li><li>Monte lentement sur la pointe des pieds.</li><li>Redescends en déroulant, talons au sol.</li></ol>
+    <p class="tip"><span>Le conseil</span>Redescends deux fois plus lentement que tu ne montes : c'est là que le mollet travaille vraiment.</p>
+    <p class="warn"><span>À éviter</span>Rebondir en enchaînant. Marque un temps d'arrêt en haut de chaque montée.</p>
+  </div>
+</article></section>
+
+<footer>
+  <p>Compose ta routine dans l'onglet <strong>Ma routine</strong> de l'application.</p>
+  <p style="margin-top:8px"><a href="./">&larr; Retour &agrave; Morning Ninja</a></p>
+</footer>
+</div>
+</body>
+</html>
