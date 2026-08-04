@@ -14,7 +14,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Nunito',sans-serif;color:var(--fg);background:linear-gradient(180deg,#89C7E8 0%,#B6E0F5 22%,#FFE8D6 55%,var(--bg-warm) 100%);background-attachment:fixed;line-height:1.6;-webkit-text-size-adjust:100%}
 .wrap{max-width:680px;margin:0 auto;padding:0 20px 64px}
-header{text-align:center;padding:56px 0 32px}
+.back{position:sticky;top:0;z-index:10;display:block;background:rgba(253,241,227,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);color:var(--accent);font-size:14px;font-weight:800;text-decoration:none;padding:14px 20px;padding-top:calc(14px + env(safe-area-inset-top,0px))}
+.back:hover,.back:focus-visible{color:var(--fg)}
+header{text-align:center;padding:36px 0 32px}
 .mark{width:76px;height:76px;border-radius:22px;margin:0 auto 18px;display:block;box-shadow:0 8px 30px rgba(43,43,54,.16)}
 h1{font-size:32px;font-weight:900;letter-spacing:-.5px}
 .sub{color:var(--fg-muted);font-size:15px;font-weight:600;margin-top:8px}
@@ -52,6 +54,7 @@ footer a{color:var(--accent);font-weight:800;text-decoration:none}
 </style>
 </head>
 <body>
+<a class="back" href="./">&larr; Morning Ninja</a>
 <div class="wrap">
 <header>
   <img class="mark" src="icon-ios-v2.png" alt="">
@@ -217,7 +220,7 @@ footer a{color:var(--accent);font-weight:800;text-decoration:none}
   <div class="ex-photo"><img src="exercise-4.jpg" alt="Bird dog lent" loading="lazy"></div>
   <div class="ex-body">
     <h3>Bird dog lent</h3>
-    
+    <span class="badge">Des deux côtés</span>
     <p class="why">Travaille l'équilibre et le gainage profond, sans à-coups ni pression sur le dos.</p>
     <ol class="steps"><li>À quatre pattes, dos neutre, regard vers le sol.</li><li>Tends le bras droit devant et la jambe gauche derrière, à hauteur du dos.</li><li>Reviens lentement, puis change de côté.</li></ol>
     <p class="tip"><span>Le conseil</span>Imagine un verre d'eau posé sur ton bas du dos : le but est de ne pas le renverser.</p>
@@ -294,7 +297,7 @@ footer a{color:var(--accent);font-weight:800;text-decoration:none}
   <div class="ex-photo"><img src="exercise-8.jpg" alt="Mobilité des épaules" loading="lazy"></div>
   <div class="ex-body">
     <h3>Mobilité des épaules</h3>
-    
+    <span class="badge">Dans les deux sens</span>
     <p class="why">Dénoue la ceinture scapulaire et la nuque, souvent tendues au réveil.</p>
     <ol class="steps"><li>Debout, bras le long du corps, épaules relâchées.</li><li>Dessine de grands cercles lents vers l'arrière.</li><li>Change de sens à mi-parcours.</li></ol>
     <p class="tip"><span>Le conseil</span>Cherche l'amplitude, pas la vitesse : trois grands cercles valent mieux que dix petits.</p>
@@ -338,7 +341,7 @@ footer a{color:var(--accent);font-weight:800;text-decoration:none}
   <div class="ex-photo"><img src="exercise-25.jpg" alt="Cercles de hanches" loading="lazy"></div>
   <div class="ex-body">
     <h3>Cercles de hanches</h3>
-    
+    <span class="badge">Dans les deux sens</span>
     <p class="why">Réveille le bassin et l'équilibre, debout et sans matériel.</p>
     <ol class="steps"><li>Debout, pieds largeur de hanches, mains sur les hanches.</li><li>Dessine des cercles lents avec le bassin.</li><li>Alterne le sens à mi-parcours.</li></ol>
     <p class="tip"><span>Le conseil</span>Cherche des cercles ronds et réguliers plutôt que grands : c'est plus exigeant qu'il n'y paraît.</p>

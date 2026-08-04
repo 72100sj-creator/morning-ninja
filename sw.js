@@ -3,11 +3,12 @@
    (pour ne JAMAIS servir une vieille version quand on est en ligne),
    le cache ne sert que de secours hors connexion. */
 
-var CACHE_NAME = "morning-ninja-v4.6";
+var CACHE_NAME = "morning-ninja-v5.2";
 
 var PRECACHE = [
   "./",
   "index.html",
+  "guide.html",
   "manifest.json",
   "icon-ios-v2.png",
   "icon-512.png",
@@ -45,7 +46,7 @@ self.addEventListener("activate", function (e) {
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
   var url = new URL(e.request.url);
-  var isPage = e.request.mode === "navigate" || url.pathname.slice(-11) === "/index.html" || url.pathname.slice(-1) === "/";
+  var isPage = e.request.mode === "navigate" || url.pathname.slice(-11) === "/index.html" || url.pathname.slice(-11) === "/guide.html" || url.pathname.slice(-1) === "/";
 
   if (isPage) {
     /* Page : reseau d'abord (toujours a jour), cache en secours hors-ligne */
