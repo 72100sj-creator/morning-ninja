@@ -6,7 +6,7 @@ Morning Ninja est une application web (PWA) de routine matinale : une routine d'
 
 👉 **[Ouvrir l'application](https://72100sj-creator.github.io/morning-ninja/)** &nbsp;·&nbsp; 📖 **[Le guide des exercices](https://72100sj-creator.github.io/morning-ninja/guide.html)**
 
-Version actuelle : **v6.0**
+Version actuelle : **v6.1**
 
 ---
 
@@ -31,7 +31,8 @@ Version actuelle : **v6.0**
 
 **Le guide des exercices**
 - Une page illustrée détaillant les 26 exercices : à quoi sert chaque mouvement, son déroulé en trois étapes, le conseil qui change tout et l'erreur à éviter
-- Accessible depuis les Paramètres, consultable hors connexion
+- Accessible depuis les Paramètres, ou en appuyant sur le nom d'un exercice dans « Ma routine » — le retour ramène à l'endroit exact où l'on était
+- Consultable hors connexion
 
 **Le suivi**
 - Série en cours (streak) sur l'accueil et sur l'écran de fin
@@ -105,7 +106,7 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 
 - Le numéro de version en bas de l'accueil (`index.html`, classe `home-version`) doit être incrémenté à chaque livraison : c'est le témoin fiable qu'une mise à jour est bien arrivée.
 - Si un **son, une image ou une icône** est modifié, il faut aussi changer la valeur de `CACHE_NAME` dans `sw.js` (ex. `morning-ninja-v3.8` → `morning-ninja-v3.9`). Sans cela, les appareils continueraient d'afficher les anciens fichiers gardés en réserve hors-ligne. Le fichier `index.html` est, lui, toujours rechargé depuis le réseau : il n'est jamais servi en version périmée.
-- Pour ajouter ou modifier un exercice : déposer sa photo (`exercise-N.jpg`, carrée, 800×800, JPEG qualité 88 — mêmes décor, tenue et lumière que les autres pour rester cohérent) puis mettre à jour son entrée dans le tableau `CATALOG` d'`index.html` — identifiant unique, nom affiché, nom prononcé, texte vocal, consigne, et `midCue` pour l'annonce de mi-parcours (« Change de côté. » ou « Change de sens. ») si l'exercice l'exige. Un exercice ajouté apparaît désactivé dans les routines existantes : aucune routine n'est modifiée à l'insu de l'utilisateur. **Ne jamais changer l'identifiant d'un exercice existant** : il est référencé dans les routines enregistrées des utilisateurs. Penser aussi à mettre à jour sa fiche dans `guide.html`.
+- Pour ajouter ou modifier un exercice : déposer sa photo (`exercise-N.jpg`, carrée, 800×800, JPEG qualité 88 — mêmes décor, tenue et lumière que les autres pour rester cohérent) puis mettre à jour son entrée dans le tableau `CATALOG` d'`index.html` — identifiant unique, nom affiché, nom prononcé, texte vocal, consigne, et `midCue` pour l'annonce de mi-parcours (« Change de côté. » ou « Change de sens. ») si l'exercice l'exige. Un exercice ajouté apparaît désactivé dans les routines existantes : aucune routine n'est modifiée à l'insu de l'utilisateur. **Ne jamais changer l'identifiant d'un exercice existant** : il est référencé dans les routines enregistrées des utilisateurs. Penser aussi à mettre à jour sa fiche dans `guide.html` : l'identifiant de l'exercice sert d'ancre (`guide.html#identifiant`) au lien depuis « Ma routine », les deux doivent donc rester alignés.
 - Si l'**icône** change, il faut lui donner un **nouveau nom de fichier** (ex. `icon-ios-v2.png` → `icon-ios-v3.png`) et mettre à jour `index.html`, `manifest.json` et `sw.js`. iOS mémorise l'icône par son nom : à nom identique, l'ancienne image resterait affichée indéfiniment.
 
 ---
@@ -123,6 +124,7 @@ Aucune dépendance, aucun outil de build : le projet est déployé tel quel via 
 
 | Version | Évolution |
 |---|---|
+| v6.1 | Les fiches du guide s'ouvrent depuis « Ma routine », avec retour à l'exercice consulté |
 | v6.0 | Uniformisation visuelle achevée : les 26 exercices dans le même univers photo |
 | v5.4 – v5.9 | Remplacement progressif des photos ; « Papillon au mur » devient « Étirement du dos au mur », « Squat sur chaise » devient « Squat » |
 | v5.3 | « Mobilité thoracique » devient « Livre ouvert » : photo et consignes plus parlantes |
