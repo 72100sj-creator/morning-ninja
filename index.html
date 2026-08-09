@@ -79,7 +79,8 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .rt-list{display:flex;flex-direction:column;gap:6px;width:100%}
 .rt-row{display:flex;align-items:center;gap:10px;background:var(--bg-warm);border:1px solid var(--border);border-radius:10px;padding:8px 10px}
 .rt-row.off{opacity:.45}
-.rt-name{flex:1;font-size:14px;font-weight:600;color:var(--fg);text-align:left}
+.rt-name{flex:1;font-size:14px;font-weight:600;color:var(--fg);text-align:left;text-decoration:none;border-bottom:1px dotted var(--border);padding-bottom:1px}
+.rt-name::after{content:" \203A";color:var(--accent);font-weight:800}
 .rt-btn{background:none;border:1px solid var(--border);border-radius:8px;width:30px;height:30px;font-family:inherit;font-size:14px;font-weight:700;color:var(--fg-muted);cursor:pointer;flex-shrink:0}
 .rt-btn:disabled{opacity:.25;cursor:default}
 .rt-check{width:20px;height:20px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
@@ -170,7 +171,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </head>
 <body>
 <div id="app">
-<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><div class="home-week" id="home-week" aria-label="Cette semaine"></div><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v6.0</p></div></section>
+<section class="screen active" id="screen-home" aria-label="Accueil"><div class="home-content"><div class="home-logo" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="18" fill="var(--accent)" opacity="0.15"/><circle cx="40" cy="40" r="12" fill="var(--accent)"/><line x1="40" y1="6" x2="40" y2="18" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="62" x2="40" y2="74" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="40" x2="18" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="16.4" y1="16.4" x2="24.7" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="55.3" y1="55.3" x2="63.6" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="63.6" y1="16.4" x2="55.3" y2="24.7" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="24.7" y1="55.3" x2="16.4" y2="63.6" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg></div><h1 class="home-title">Morning Ninja</h1><p class="home-subtitle">Quelques minutes de mobilité pour bien commencer la journée.</p><div class="home-streak" id="home-streak" aria-live="polite"></div><div class="home-week" id="home-week" aria-label="Cette semaine"></div><button class="btn-primary" id="btn-start" aria-label="Commencer la routine">C'est parti</button><p class="home-version">v6.1</p></div></section>
 <section class="screen" id="screen-ready" aria-label="Prêt"><div class="ready-content"><div class="ready-icon" aria-hidden="true">&#128266;</div><h2 class="ready-title">Prêt ?</h2><p class="ready-text">Cliquez sur le bouton pour activer le son.<br>Vous devez entendre un petit "Ding".</p><button class="btn-primary" id="btn-activate-sound">Activer le son</button><p class="ready-ok" id="ready-ok">&#10004;&#65039; Son activé !</p><p class="reminder"><span aria-hidden="true">&#8986;</span>Pense &agrave; d&eacute;marrer l'activit&eacute; &laquo;&nbsp;Yoga&nbsp;&raquo; sur ta Garmin.</p></div></section>
 <section class="screen" id="screen-go" aria-label="Go"><div class="go-content"><div class="go-text">GO</div></div></section>
 <section class="screen" id="screen-countdown" aria-label="Compte à rebours"><div id="countdown-display" aria-live="assertive"></div></section>
@@ -736,9 +737,9 @@ function renderRoutine(){
     for(var i=0;i<state.routine.length;i++){
         var it=state.routine[i];var ex=catalogById(it.id);if(!ex)continue;
         var seul=it.on&&actifs<=1;
-        h+='<div class="rt-row'+(it.on?"":" off")+'">'
+        h+='<div class="rt-row'+(it.on?"":" off")+'" data-row="'+it.id+'">'
           +'<input type="checkbox" class="rt-check" data-i="'+i+'"'+(it.on?" checked":"")+(seul?" disabled":"")+' aria-label="'+ex.name+'">'
-          +'<span class="rt-name">'+ex.name+'</span>'
+          +'<a class="rt-name" href="guide.html#'+it.id+'" data-guide="'+it.id+'">'+ex.name+'</a>'
           +'<button class="rt-btn" data-up="'+i+'"'+(i===0?" disabled":"")+' aria-label="Monter">&#8593;</button>'
           +'<button class="rt-btn" data-down="'+i+'"'+(i===state.routine.length-1?" disabled":"")+' aria-label="Descendre">&#8595;</button>'
           +'</div>';
@@ -812,6 +813,11 @@ document.getElementById("btn-save-routine").addEventListener("click",function(){
 });
 document.getElementById("routine-list").addEventListener("click",function(e){
     var t=e.target;var changed=false;
+    if(t.dataset.guide!==undefined){
+        /* Ouverture d'une fiche du guide : on memorise l'onglet et l'exercice pour le retour */
+        try{sessionStorage.setItem("mn-retour",JSON.stringify({screen:"routine-edit",ex:t.dataset.guide}));}catch(e2){}
+        return; /* le lien fait son travail */
+    }
     if(t.classList.contains("rt-check")){
         var i=parseInt(t.dataset.i,10);state.routine[i].on=t.checked;changed=true;
     } else if(t.dataset.up!==undefined){
@@ -895,6 +901,24 @@ function dateStr(d){return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.g
 function pad2(n){return n<10?"0"+n:""+n;}
 loadData();refreshHome();document.getElementById("timer-ring").style.strokeDasharray=CIRCUMFERENCE;document.getElementById("timer-ring").style.strokeDashoffset="0";
 /* Mode hors-ligne : enregistrement du service worker (silencieux en cas d'echec) */
+/* Retour depuis le guide : on revient sur l onglet Ma routine, a l exercice consulte */
+function restaurerRetour(){
+    try{
+        var r=sessionStorage.getItem("mn-retour");
+        if(!r)return;
+        sessionStorage.removeItem("mn-retour");
+        var o=JSON.parse(r);
+        if(!o||o.screen!=="routine-edit")return;
+        showScreen("routine-edit");
+        setTimeout(function(){
+            var el=document.querySelector('[data-row="'+o.ex+'"]');
+            if(el&&el.scrollIntoView)el.scrollIntoView({block:"center"});
+        },80);
+    }catch(e){}
+}
+restaurerRetour();
+window.addEventListener("pageshow",function(ev){if(ev.persisted)restaurerRetour();});
+
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}
 })();
 </script>
